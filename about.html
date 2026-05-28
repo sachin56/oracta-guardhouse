@@ -3,8 +3,12 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Learn about Oracta Guard House — Sri Lanka's trusted security partner since 2008, serving 1,400+ clients with licensed, military-trained officers across the Western Province." />
   <title>About Us — Oracta Guard House</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
       --navy:#08060f; --navy2:#0e0b1a; --navy3:#1a1530;
@@ -15,7 +19,7 @@
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html{scroll-behavior:smooth;}
-    body{background:var(--navy);color:var(--white);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;overflow-x:hidden;}
+    body{background:var(--navy);color:var(--white);font-family:'Lexend','Segoe UI',system-ui,sans-serif;overflow-x:hidden;}
     ::-webkit-scrollbar{width:6px;}
     ::-webkit-scrollbar-track{background:var(--navy2);}
     ::-webkit-scrollbar-thumb{background:var(--purple);border-radius:3px;}
@@ -120,7 +124,8 @@
     .certs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
     .cert-card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:24px;text-align:center;transition:all 0.3s ease;}
     .cert-card:hover{border-color:var(--purple);transform:translateY(-4px);}
-    .cert-icon{font-size:2.2rem;margin-bottom:14px;}
+    .cert-icon{font-size:2.2rem;margin-bottom:14px;display:flex;align-items:center;justify-content:center;}
+    .cert-icon svg{width:40px;height:40px;stroke:var(--blue);}
     .cert-card h4{font-size:0.92rem;font-weight:700;margin-bottom:6px;}
     .cert-card p{font-size:0.78rem;color:var(--text-muted);}
 
@@ -195,6 +200,8 @@
     .preloader-bar-track{width:160px;height:2px;background:rgba(124,58,199,0.2);border-radius:2px;overflow:hidden;}
     .preloader-bar{height:100%;width:55%;background:linear-gradient(90deg,transparent,var(--purple),var(--blue),transparent);animation:pre-bar 1.6s ease-in-out infinite;}
     @keyframes pre-bar{0%{transform:translateX(-200%);}100%{transform:translateX(400%);}}
+
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;transition-duration:0.01ms!important;}.particle{display:none;}}
   </style>
 </head>
 <body>
@@ -263,6 +270,7 @@
     <div class="nav-logo-text"><span class="top">ORACTA</span><span class="bot">Guard House</span></div>
   </a>
   <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
     <li><a href="index.html#services">Services</a></li>
     <li><a href="index.html#industries">Industries</a></li>
     <li><a href="why-us.html">Why Us</a></li>
@@ -457,22 +465,22 @@
     </div>
     <div class="certs-grid">
       <div class="cert-card reveal">
-        <div class="cert-icon">🏆</div>
+        <div class="cert-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg></div>
         <h4>ISO 9001:2015</h4>
         <p>Quality Management System — certified since 2017.</p>
       </div>
       <div class="cert-card reveal">
-        <div class="cert-icon">📋</div>
+        <div class="cert-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/><path d="M9 12h6M9 16h4"/></svg></div>
         <h4>PSSA Licensed</h4>
         <p>Fully licensed by Sri Lanka's Private Security Services Authority.</p>
       </div>
       <div class="cert-card reveal">
-        <div class="cert-icon">🛡️</div>
+        <div class="cert-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
         <h4>Ministry Registered</h4>
         <p>Registered with the Ministry of Defence as an approved security service provider.</p>
       </div>
       <div class="cert-card reveal">
-        <div class="cert-icon">🚑</div>
+        <div class="cert-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div>
         <h4>First Aid Certified</h4>
         <p>All senior officers hold Red Cross first aid and emergency response certifications.</p>
       </div>

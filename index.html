@@ -4,7 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Oracta Guard House — Elite Security Services</title>
+  <meta name="description" content="Oracta Guard House delivers elite security services across Sri Lanka — armed patrol, corporate security, CCTV monitoring, and executive protection since 2008." />
   <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous"/>
   <style>
     :root {
@@ -27,7 +31,7 @@
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body { background: var(--navy); color: var(--white); font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; overflow-x: hidden; }
+    body { background: var(--navy); color: var(--white); font-family: 'Lexend', 'Segoe UI', system-ui, sans-serif; overflow-x: hidden; }
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: var(--navy2); }
     ::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 3px; }
@@ -587,6 +591,61 @@
       .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
     }
 
+    /* ─── MOBILE OVERFLOW FIX ─── */
+    .hero-desc { overflow-wrap: break-word; word-break: break-word; }
+
+    /* ─── CURSOR POINTER ─── */
+    .industry-card, .blog-card, .why-card, .testi-card,
+    .service-card, .client-card { cursor: pointer; }
+
+    /* ─── SVG ICON INSIDE SERVICE/INDUSTRY/CONTACT CELLS ─── */
+    .service-icon svg, .industry-icon svg, .contact-item-icon svg {
+      width: 26px; height: 26px; stroke: var(--blue); display: block;
+    }
+    .industry-icon { font-size: inherit; display: flex; align-items: center; justify-content: center; }
+    .about-tag-icon { width: 18px; height: 18px; stroke: var(--blue); flex-shrink: 0; }
+
+    /* ─── STAGGERED REVEAL DELAYS ─── */
+    .services-grid .reveal:nth-child(1){ transition-delay:0s; }
+    .services-grid .reveal:nth-child(2){ transition-delay:.08s; }
+    .services-grid .reveal:nth-child(3){ transition-delay:.16s; }
+    .services-grid .reveal:nth-child(4){ transition-delay:.08s; }
+    .services-grid .reveal:nth-child(5){ transition-delay:.16s; }
+    .services-grid .reveal:nth-child(6){ transition-delay:.24s; }
+    .industries-grid .reveal:nth-child(1){ transition-delay:0s; }
+    .industries-grid .reveal:nth-child(2){ transition-delay:.06s; }
+    .industries-grid .reveal:nth-child(3){ transition-delay:.12s; }
+    .industries-grid .reveal:nth-child(4){ transition-delay:.18s; }
+    .industries-grid .reveal:nth-child(5){ transition-delay:.06s; }
+    .industries-grid .reveal:nth-child(6){ transition-delay:.12s; }
+    .industries-grid .reveal:nth-child(7){ transition-delay:.18s; }
+    .industries-grid .reveal:nth-child(8){ transition-delay:.24s; }
+    .why-grid .reveal:nth-child(1){ transition-delay:0s; }
+    .why-grid .reveal:nth-child(2){ transition-delay:.08s; }
+    .why-grid .reveal:nth-child(3){ transition-delay:.08s; }
+    .why-grid .reveal:nth-child(4){ transition-delay:.16s; }
+    .why-grid .reveal:nth-child(5){ transition-delay:.16s; }
+    .why-grid .reveal:nth-child(6){ transition-delay:.24s; }
+    .testimonials-grid .reveal:nth-child(1){ transition-delay:0s; }
+    .testimonials-grid .reveal:nth-child(2){ transition-delay:.1s; }
+    .testimonials-grid .reveal:nth-child(3){ transition-delay:.2s; }
+    .blog-grid .reveal:nth-child(1){ transition-delay:0s; }
+    .blog-grid .reveal:nth-child(2){ transition-delay:.1s; }
+    .blog-grid .reveal:nth-child(3){ transition-delay:.2s; }
+
+    /* ─── ENHANCED HOVER GLOWS ─── */
+    .service-card:hover { box-shadow: 0 20px 60px rgba(124,58,199,0.22), 0 0 0 1px rgba(124,58,199,0.35); }
+    .industry-card:hover { box-shadow: 0 16px 40px rgba(71,180,232,0.18), 0 0 0 1px rgba(71,180,232,0.3); }
+    .why-card:hover { box-shadow: 0 12px 40px rgba(124,58,199,0.18), 0 0 0 1px rgba(124,58,199,0.3); }
+
+    /* ─── PREFERS REDUCED MOTION ─── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+      .particle { display: none; }
+      .ring-orbit { animation: none; }
+      .slider-track { animation: none; }
+    }
+
     /* ─── PRELOADER ─── */
     #preloader{position:fixed;inset:0;z-index:9999;background:var(--navy);display:flex;align-items:center;justify-content:center;transition:opacity 0.6s ease,visibility 0.6s ease;}
     #preloader.hidden{opacity:0;visibility:hidden;pointer-events:none;}
@@ -726,6 +785,72 @@
     <!-- Nose bridge line -->
     <line x1="150" y1="167" x2="150" y2="184" stroke="white" stroke-width="1" opacity="0.3"/>
   </symbol>
+
+  <!-- ── SERVICE ICONS ── -->
+  <symbol id="icon-corporate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18M9 13h3M9 17h3M15 13h.01M15 17h.01"/>
+  </symbol>
+  <symbol id="icon-shield-badge" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>
+  </symbol>
+  <symbol id="icon-cctv" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/><circle cx="8" cy="12" r="2"/>
+  </symbol>
+  <symbol id="icon-home-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/>
+  </symbol>
+  <symbol id="icon-event-crowd" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+  </symbol>
+  <symbol id="icon-vip-car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M5 17H3a2 2 0 01-2-2V9a2 2 0 012-2h14l4 4v4a2 2 0 01-2 2h-2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/>
+  </symbol>
+
+  <!-- ── INDUSTRY ICONS ── -->
+  <symbol id="icon-bank" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 10h18M3 14h18M12 3L2 8h20L12 3zM5 10v4M9 10v4M15 10v4M19 10v4M3 18h18"/>
+  </symbol>
+  <symbol id="icon-factory" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2 20V8l5-3v3l5-3v3l5-2v12H2zM2 20h18M7 20v-5h4v5"/>
+  </symbol>
+  <symbol id="icon-retail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/>
+  </symbol>
+  <symbol id="icon-construction" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2 20h20M4 20V10M20 20V10M12 4l8 6H4l8-6z"/><path d="M10 20v-6h4v6"/>
+  </symbol>
+  <symbol id="icon-hotel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 22V4a1 1 0 011-1h16a1 1 0 011 1v18M2 22h20M8 6h.01M8 10h.01M8 14h.01M16 6h.01M16 10h.01M16 14h.01M12 6h.01M12 10h.01"/>
+  </symbol>
+  <symbol id="icon-healthcare" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+  </symbol>
+  <symbol id="icon-education" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 10v6M2 10l10-5 10 5-10 5-10-5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+  </symbol>
+  <symbol id="icon-zap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+  </symbol>
+
+  <!-- ── CONTACT + UI ICONS ── -->
+  <symbol id="icon-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.8 19.8 0 01-8.63-3.07A19.5 19.5 0 013.07 9.5 19.8 19.8 0 01.01 4.6 2 2 0 012 2.44h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/>
+  </symbol>
+  <symbol id="icon-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+  </symbol>
+  <symbol id="icon-map-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
+  </symbol>
+  <symbol id="icon-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+  </symbol>
+  <symbol id="icon-award" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/>
+  </symbol>
+  <symbol id="icon-shield-send" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>
+  </symbol>
 </svg>
 
 <!-- PRELOADER -->
@@ -757,6 +882,7 @@
   </a>
 
   <ul class="nav-links" id="navLinks">
+    <li><a href="#hero">Home</a></li>
     <li><a href="#services">Services</a></li>
     <li><a href="#industries">Industries</a></li>
     <li><a href="why-us.html">Why Us</a></li>
@@ -923,37 +1049,37 @@
 
   <div class="services-grid">
     <div class="service-card reveal">
-      <div class="service-icon">🏢</div>
+      <div class="service-icon"><svg viewBox="0 0 24 24"><use href="#icon-corporate"/></svg></div>
       <h3>Corporate Security</h3>
       <p>Professional security management for office complexes, corporate parks, and multi-tenant buildings. Access control, visitor management, and incident response.</p>
       <span class="service-tag">→ Learn more</span>
     </div>
     <div class="service-card reveal">
-      <div class="service-icon">🚔</div>
+      <div class="service-icon"><svg viewBox="0 0 24 24"><use href="#icon-shield-badge"/></svg></div>
       <h3>Armed Patrol Services</h3>
       <p>Licensed armed guards conducting regular patrol routes across your premises. Visible deterrence backed by rapid response protocols.</p>
       <span class="service-tag">→ Learn more</span>
     </div>
     <div class="service-card reveal">
-      <div class="service-icon">📹</div>
+      <div class="service-icon"><svg viewBox="0 0 24 24"><use href="#icon-cctv"/></svg></div>
       <h3>Surveillance & Monitoring</h3>
       <p>24/7 CCTV monitoring centers with trained analysts. Real-time threat detection, remote access, and incident archiving for full accountability.</p>
       <span class="service-tag">→ Learn more</span>
     </div>
     <div class="service-card reveal">
-      <div class="service-icon">🏠</div>
+      <div class="service-icon"><svg viewBox="0 0 24 24"><use href="#icon-home-shield"/></svg></div>
       <h3>Residential Protection</h3>
       <p>Gated community security, estate guards, and neighborhood watch coordination. Peace of mind for your family and property around the clock.</p>
       <span class="service-tag">→ Learn more</span>
     </div>
     <div class="service-card reveal">
-      <div class="service-icon">🎤</div>
+      <div class="service-icon"><svg viewBox="0 0 24 24"><use href="#icon-event-crowd"/></svg></div>
       <h3>Event Security</h3>
       <p>Crowd management, access control, and VIP protection for concerts, corporate events, and public gatherings. Discreet, professional, effective.</p>
       <span class="service-tag">→ Learn more</span>
     </div>
     <div class="service-card reveal">
-      <div class="service-icon">🚗</div>
+      <div class="service-icon"><svg viewBox="0 0 24 24"><use href="#icon-vip-car"/></svg></div>
       <h3>Executive Protection</h3>
       <p>Close protection officers and secure transportation for executives, diplomats, and high-profile individuals requiring elevated personal security.</p>
       <span class="service-tag">→ Learn more</span>
@@ -970,42 +1096,42 @@
   </div>
   <div class="industries-grid">
     <div class="industry-card reveal">
-      <div class="industry-icon">🏦</div>
+      <div class="industry-icon"><svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#47b4e8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-bank"/></svg></div>
       <h4>Banking & Finance</h4>
       <p>Cash transit, vault protection, ATM security, and branch guard services for banks and financial institutions.</p>
     </div>
     <div class="industry-card reveal">
-      <div class="industry-icon">🏭</div>
+      <div class="industry-icon"><svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#47b4e8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-factory"/></svg></div>
       <h4>Manufacturing & Factories</h4>
       <p>Gate control, perimeter patrol, and shift-based security for garment, industrial, and production facilities.</p>
     </div>
     <div class="industry-card reveal">
-      <div class="industry-icon">🛒</div>
+      <div class="industry-icon"><svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#47b4e8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-retail"/></svg></div>
       <h4>Retail & Supermarkets</h4>
       <p>Loss prevention, shopper safety, and access management for supermarkets, malls, and retail chains.</p>
     </div>
     <div class="industry-card reveal">
-      <div class="industry-icon">🏗️</div>
+      <div class="industry-icon"><svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#47b4e8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-construction"/></svg></div>
       <h4>Construction Sites</h4>
       <p>Night patrol, equipment protection, and unauthorized access prevention for active construction projects.</p>
     </div>
     <div class="industry-card reveal">
-      <div class="industry-icon">🏨</div>
+      <div class="industry-icon"><svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#47b4e8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-hotel"/></svg></div>
       <h4>Hotels & Hospitality</h4>
       <p>Discreet protection for guests, staff, and assets in hotels, resorts, and hospitality venues.</p>
     </div>
     <div class="industry-card reveal">
-      <div class="industry-icon">🏥</div>
+      <div class="industry-icon"><svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#47b4e8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-healthcare"/></svg></div>
       <h4>Healthcare</h4>
       <p>Patient safety, pharmaceutical protection, and access control for hospitals and medical campuses.</p>
     </div>
     <div class="industry-card reveal">
-      <div class="industry-icon">🏫</div>
+      <div class="industry-icon"><svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#47b4e8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-education"/></svg></div>
       <h4>Education</h4>
       <p>Campus security, student safety monitoring, and controlled access for schools and universities.</p>
     </div>
     <div class="industry-card reveal">
-      <div class="industry-icon">⚡</div>
+      <div class="industry-icon"><svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="#47b4e8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-zap"/></svg></div>
       <h4>Utilities & Telecoms</h4>
       <p>Critical infrastructure protection for power stations, telecom towers, and utility installations.</p>
     </div>
@@ -1016,7 +1142,7 @@
 <section id="about">
   <div class="about-layout">
     <div style="position:relative" class="reveal">
-      <div class="about-tag">🏆 ISO 9001 Certified</div>
+      <div class="about-tag"><svg class="about-tag-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-award"/></svg> ISO 9001 Certified</div>
       <div class="about-image-box">
         <svg class="about-logo-inner" viewBox="0 0 300 300"><use href="#oracta-logo"/></svg>
       </div>
@@ -1267,28 +1393,28 @@
       <p>Ready to take the next step? Our security consultants are available 24/7. Fill out the form and we'll respond within 2 hours.</p>
       <div class="contact-items">
         <div class="contact-item">
-          <div class="contact-item-icon">📞</div>
+          <div class="contact-item-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#47b4e8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-phone"/></svg></div>
           <div class="contact-item-text">
             <div class="label">Phone</div>
             <div class="value">+94 11 234 5678</div>
           </div>
         </div>
         <div class="contact-item">
-          <div class="contact-item-icon">✉️</div>
+          <div class="contact-item-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#47b4e8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-mail"/></svg></div>
           <div class="contact-item-text">
             <div class="label">Email</div>
             <div class="value">info@oractaguard.com</div>
           </div>
         </div>
         <div class="contact-item">
-          <div class="contact-item-icon">📍</div>
+          <div class="contact-item-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#47b4e8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-map-pin"/></svg></div>
           <div class="contact-item-text">
             <div class="label">Headquarters</div>
             <div class="value">42 Security Tower, Colombo 03, Sri Lanka</div>
           </div>
         </div>
         <div class="contact-item">
-          <div class="contact-item-icon">⏰</div>
+          <div class="contact-item-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#47b4e8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-clock"/></svg></div>
           <div class="contact-item-text">
             <div class="label">Operations</div>
             <div class="value">24 / 7 / 365 — Always On</div>
@@ -1322,10 +1448,12 @@
           </select>
         </div>
         <div class="form-group"><label for="f-message">Message</label><textarea id="f-message" placeholder="Briefly describe your security needs..."></textarea></div>
-        <button class="form-submit" onclick="submitForm()">Send Request &nbsp;🛡</button>
+        <button class="form-submit" onclick="submitForm()">Send Request &nbsp;→</button>
       </div>
       <div class="form-success" id="formSuccess">
-        <div class="icon">✅</div>
+        <div class="icon" style="font-size:3rem;margin-bottom:16px;">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#47b4e8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
         <h3>Request Received!</h3>
         <p>Thank you for reaching out. A senior security consultant will contact you within 2 hours.</p>
       </div>
@@ -1475,7 +1603,7 @@
     });
 
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; <a href="https://leaflet.js.com">Leaflet</a> | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      attribution: '&copy; <a href="https://leafletjs.com">Leaflet</a> | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       subdomains: 'abcd',
       maxZoom: 19
     }).addTo(map);
