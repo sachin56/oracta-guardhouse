@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
+  <circle cx="150" cy="150" r="148" fill="#7c3ac7"/>
+  <defs>
+    <path id="top-arc" d="M 28,150 A 122,122 0 0,1 272,150"/>
+    <path id="bot-arc" d="M 38,192 A 122,122 0 0,0 262,192"/>
+  </defs>
+  <text fill="white" font-size="30" font-weight="900" font-family="Arial Black, Arial, sans-serif" letter-spacing="6"><textPath href="#top-arc" startOffset="50%" text-anchor="middle">ORACTA</textPath></text>
+  <text fill="white" font-size="22" font-weight="900" font-family="Arial Black, Arial, sans-serif" letter-spacing="3"><textPath href="#bot-arc" startOffset="50%" text-anchor="middle">GUARD HOUSE</textPath></text>
+  <circle cx="150" cy="150" r="107" fill="none" stroke="#e52222" stroke-width="5"/>
+  <circle cx="150" cy="150" r="101" fill="#47b4e8"/>
+  <g fill="white">
+    <path d="M 148,172 C 140,165 125,152 105,135 C 88,120 68,100 48,74 C 56,78 65,85 68,94 C 60,82 58,67 62,52 C 70,66 74,80 76,94 C 74,78 78,64 86,54 C 91,68 92,82 92,96 C 93,80 99,66 110,58 C 111,72 110,85 112,97 C 116,83 125,70 136,63 C 134,77 132,89 134,100 C 139,88 145,78 150,73 Z"/>
+    <path d="M 152,172 C 160,165 175,152 195,135 C 212,120 232,100 252,74 C 244,78 235,85 232,94 C 240,82 242,67 238,52 C 230,66 226,80 224,94 C 226,78 222,64 214,54 C 209,68 208,82 208,96 C 207,80 201,66 190,58 C 189,72 190,85 188,97 C 184,83 175,70 164,63 C 166,77 168,89 166,100 C 161,88 155,78 150,73 Z"/>
+    <ellipse cx="150" cy="178" rx="30" ry="28"/>
+    <path d="M 130,158 L 122,140 L 134,154 Z"/>
+    <path d="M 170,158 L 178,140 L 166,154 Z"/>
+    <ellipse cx="150" cy="204" rx="20" ry="16" opacity="0.9"/>
+  </g>
+  <ellipse cx="140" cy="177" rx="11" ry="10" fill="#1a6fa0"/>
+  <ellipse cx="160" cy="177" rx="11" ry="10" fill="#1a6fa0"/>
+  <circle cx="140" cy="177" r="9" fill="#47b4e8"/>
+  <circle cx="160" cy="177" r="9" fill="#47b4e8"/>
+  <circle cx="140" cy="177" r="5" fill="#082a50"/>
+  <circle cx="160" cy="177" r="5" fill="#082a50"/>
+  <circle cx="137" cy="174" r="2.5" fill="white" opacity="0.9"/>
+  <circle cx="157" cy="174" r="2.5" fill="white" opacity="0.9"/>
+  <path d="M 150,184 L 144,193 Q 150,196 156,193 Z" fill="#c8941a"/>
+</svg>

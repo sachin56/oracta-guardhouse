@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blog — Oracta Guard House</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <style>
+    :root{--navy:#08060f;--navy2:#0e0b1a;--navy3:#1a1530;--purple:#7c3ac7;--purple-light:#9d5fe0;--purple-dim:rgba(124,58,199,0.15);--blue:#47b4e8;--red:#e52222;--white:#ffffff;--text-muted:#8b91aa;--text-light:#c4c9e0;--border:rgba(124,58,199,0.25);--card-bg:rgba(14,11,26,0.85);--radius:12px;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--navy);color:var(--white);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;overflow-x:hidden;}
+    ::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:var(--navy2);}::-webkit-scrollbar-thumb{background:var(--purple);border-radius:3px;}
+    nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:72px;background:rgba(8,6,15,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:box-shadow 0.3s ease;}
+    .nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+    .nav-logo-svg{width:46px;height:46px;flex-shrink:0;}
+    .nav-logo-text{display:flex;flex-direction:column;line-height:1.1;}
+    .nav-logo-text .top{font-size:1.05rem;font-weight:800;color:var(--white);letter-spacing:2px;}
+    .nav-logo-text .bot{font-size:0.65rem;font-weight:600;color:var(--blue);letter-spacing:3px;text-transform:uppercase;}
+    .nav-links{display:flex;align-items:center;gap:28px;list-style:none;}
+    .nav-links a{color:var(--text-light);text-decoration:none;font-size:0.88rem;font-weight:500;transition:color 0.2s;position:relative;}
+    .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:2px;background:var(--purple-light);transform:scaleX(0);transition:transform 0.25s ease;}
+    .nav-links a:hover,.nav-links a.active{color:var(--purple-light);}
+    .nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1);}
+    .nav-cta{background:var(--purple)!important;color:var(--white)!important;padding:9px 22px;border-radius:8px;font-weight:700!important;box-shadow:0 4px 16px rgba(124,58,199,0.35);}
+    .nav-cta::after{display:none!important;}
+    .nav-cta:hover{background:var(--purple-light)!important;transform:translateY(-1px);}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none;outline:none;}
+    .hamburger span{display:block;width:25px;height:2px;background:var(--white);border-radius:2px;}
+    section{padding:80px 5%;}
+    .container{max-width:1200px;margin:0 auto;}
+    .section-label{display:inline-flex;align-items:center;gap:8px;font-size:0.73rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--blue);margin-bottom:16px;}
+    .section-label::before,.section-label::after{content:'';display:block;width:20px;height:1px;background:var(--blue);}
+    .section-title{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;letter-spacing:-0.5px;line-height:1.15;margin-bottom:16px;}
+    .section-title .purple{color:var(--purple-light);}
+    .section-title .blue{color:var(--blue);}
+    .btn-primary{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--purple),#5a2a9a);color:var(--white);padding:14px 32px;border-radius:10px;font-weight:700;font-size:1rem;text-decoration:none;transition:all 0.25s ease;box-shadow:0 4px 24px rgba(124,58,199,0.4);}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(124,58,199,0.6);}
+    .btn-secondary{display:inline-flex;align-items:center;gap:10px;background:transparent;color:var(--white);padding:12px 24px;border-radius:10px;font-weight:600;font-size:0.9rem;text-decoration:none;border:1px solid var(--border);transition:all 0.25s ease;}
+    .btn-secondary:hover{background:var(--purple-dim);border-color:var(--purple-light);}
+    .reveal{opacity:0;transform:translateY(30px);transition:opacity 0.6s ease,transform 0.6s ease;}
+    .reveal.visible{opacity:1;transform:translateY(0);}
+
+    /* PAGE HERO */
+    .page-hero{position:relative;padding:140px 5% 80px;background:linear-gradient(180deg,var(--navy) 0%,var(--navy2) 100%);overflow:hidden;}
+    .page-hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(124,58,199,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,199,0.05) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 100%);}
+    .page-hero-glow{position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 60%,rgba(124,58,199,0.1) 0%,transparent 70%);}
+    .page-hero-content{position:relative;z-index:2;text-align:center;max-width:700px;margin:0 auto;}
+    .breadcrumb{display:inline-flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--text-muted);margin-bottom:20px;}
+    .breadcrumb a{color:var(--blue);text-decoration:none;}
+    .breadcrumb span{opacity:0.5;}
+    .page-hero h1{font-size:clamp(2.2rem,5vw,3.6rem);font-weight:800;letter-spacing:-1px;line-height:1.1;margin-bottom:20px;}
+    .page-hero p{font-size:1.05rem;color:var(--text-light);line-height:1.7;}
+    .page-hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--purple-dim);border:1px solid var(--border);border-radius:50px;padding:6px 16px;font-size:0.78rem;font-weight:700;color:var(--blue);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:24px;}
+
+    /* FEATURED */
+    #featured{background:var(--navy);padding-top:80px;}
+    .featured-card{display:grid;grid-template-columns:1fr 1fr;gap:0;background:var(--card-bg);border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:all 0.3s ease;max-width:1200px;margin:0 auto;}
+    .featured-card:hover{border-color:var(--purple);box-shadow:0 24px 80px rgba(124,58,199,0.2);}
+    .featured-thumb{min-height:340px;position:relative;overflow:hidden;background:var(--navy3);}
+    .featured-thumb img{width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0;transition:transform 0.5s ease;}
+    .featured-card:hover .featured-thumb img{transform:scale(1.05);}
+    .featured-thumb::before{content:'FEATURED';position:absolute;top:20px;left:20px;background:var(--purple);color:white;font-size:0.7rem;font-weight:700;letter-spacing:2px;padding:5px 12px;border-radius:50px;z-index:2;}
+    .featured-thumb::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(8,6,15,0.5) 0%,rgba(8,6,15,0.2) 100%);z-index:1;}
+    .featured-body{padding:48px 40px;display:flex;flex-direction:column;justify-content:center;}
+    .blog-tag{display:inline-block;background:var(--purple-dim);border:1px solid var(--border);border-radius:50px;padding:4px 14px;font-size:0.72rem;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:16px;}
+    .featured-body h2{font-size:1.7rem;font-weight:800;line-height:1.3;margin-bottom:16px;letter-spacing:-0.3px;}
+    .featured-body p{font-size:0.93rem;color:var(--text-muted);line-height:1.7;margin-bottom:28px;}
+    .blog-meta-row{display:flex;align-items:center;gap:20px;font-size:0.8rem;color:var(--text-muted);margin-bottom:24px;}
+    .meta-author{display:flex;align-items:center;gap:8px;}
+    .meta-avatar{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--blue));display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:800;}
+    .blog-read-link{color:var(--blue);font-weight:600;text-decoration:none;font-size:0.9rem;display:inline-flex;align-items:center;gap:6px;transition:gap 0.2s,color 0.2s;}
+    .blog-read-link:hover{color:var(--purple-light);gap:10px;}
+
+    /* FILTERS */
+    .filter-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:40px;}
+    .filter-btn{background:var(--card-bg);border:1px solid var(--border);border-radius:50px;padding:8px 20px;font-size:0.82rem;font-weight:600;color:var(--text-muted);cursor:pointer;transition:all 0.25s ease;font-family:inherit;}
+    .filter-btn:hover,.filter-btn.active{background:var(--purple-dim);border-color:var(--purple);color:var(--white);}
+
+    /* BLOG GRID */
+    #articles{background:var(--navy2);}
+    .blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+    .blog-card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:all 0.3s ease;display:flex;flex-direction:column;}
+    .blog-card:hover{border-color:var(--purple);transform:translateY(-5px);box-shadow:0 16px 48px rgba(124,58,199,0.15);}
+    .blog-thumb{height:190px;position:relative;overflow:hidden;background:var(--navy3);}
+    .blog-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;}
+    .blog-card:hover .blog-thumb img{transform:scale(1.07);}
+    .thumb-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,6,15,0.15) 0%,rgba(8,6,15,0.55) 100%);}
+    .blog-body{padding:24px;flex:1;display:flex;flex-direction:column;}
+    .blog-card h3{font-size:1rem;font-weight:700;line-height:1.4;margin-bottom:10px;flex:1;}
+    .blog-card p{font-size:0.84rem;color:var(--text-muted);line-height:1.6;margin-bottom:18px;}
+    .blog-footer{display:flex;align-items:center;justify-content:space-between;font-size:0.78rem;color:var(--text-muted);margin-top:auto;}
+    .read-more{color:var(--blue);font-weight:600;text-decoration:none;transition:color 0.2s;}
+    .read-more:hover{color:var(--purple-light);}
+    .reading-time{display:flex;align-items:center;gap:4px;}
+
+    /* NEWSLETTER */
+    #newsletter{background:var(--navy);}
+    .newsletter-box{background:linear-gradient(135deg,var(--navy3),#1a0d38);border:1px solid var(--border);border-radius:20px;padding:60px 48px;text-align:center;position:relative;overflow:hidden;max-width:700px;margin:0 auto;}
+    .newsletter-box::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(124,58,199,0.15) 0%,transparent 70%);}
+    .newsletter-box h2{font-size:1.8rem;font-weight:800;margin-bottom:12px;position:relative;z-index:1;}
+    .newsletter-box p{font-size:0.95rem;color:var(--text-light);margin-bottom:32px;position:relative;z-index:1;}
+    .newsletter-form{display:flex;gap:12px;max-width:460px;margin:0 auto;position:relative;z-index:1;}
+    .newsletter-form input{flex:1;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:10px;padding:13px 18px;color:var(--white);font-size:0.93rem;font-family:inherit;outline:none;transition:all 0.25s ease;}
+    .newsletter-form input:focus{border-color:var(--purple);box-shadow:0 0 0 3px rgba(124,58,199,0.15);}
+    .newsletter-form button{background:linear-gradient(135deg,var(--purple),#5a2a9a);color:white;border:none;padding:13px 24px;border-radius:10px;font-weight:700;font-size:0.93rem;cursor:pointer;font-family:inherit;transition:all 0.25s ease;white-space:nowrap;box-shadow:0 4px 16px rgba(124,58,199,0.3);}
+    .newsletter-form button:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(124,58,199,0.5);}
+
+    footer{background:#05030a;border-top:1px solid var(--border);padding:60px 5% 30px;}
+    .footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px;padding-bottom:48px;border-bottom:1px solid var(--border);margin-bottom:32px;}
+    .footer-brand p{font-size:0.86rem;color:var(--text-muted);line-height:1.65;max-width:260px;margin-top:16px;}
+    .footer-social{display:flex;gap:10px;margin-top:24px;}
+    .social-btn{width:36px;height:36px;background:var(--purple-dim);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--purple-light);font-size:0.88rem;transition:all 0.25s ease;}
+    .social-btn:hover{background:var(--purple);color:var(--white);transform:translateY(-2px);}
+    .footer-col h4{font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--blue);margin-bottom:20px;}
+    .footer-col ul{list-style:none;}
+    .footer-col li{margin-bottom:12px;}
+    .footer-col a{color:var(--text-muted);text-decoration:none;font-size:0.86rem;transition:color 0.2s;}
+    .footer-col a:hover{color:var(--white);}
+    .footer-bottom{display:flex;align-items:center;justify-content:space-between;font-size:0.8rem;color:var(--text-muted);}
+    .wa-float{position:fixed;bottom:28px;right:28px;z-index:999;width:58px;height:58px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(37,211,102,0.5);text-decoration:none;transition:all 0.3s ease;}
+    .wa-float:hover{transform:scale(1.12);}
+    .wa-float svg{width:30px;height:30px;}
+    .wa-tooltip{position:absolute;right:72px;top:50%;transform:translateY(-50%);background:#1a1a1a;color:white;padding:7px 14px;border-radius:8px;font-size:0.82rem;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.2s;}
+    .wa-float:hover .wa-tooltip{opacity:1;}
+
+    @media(max-width:900px){
+      .hamburger{display:flex;}
+      .nav-links{position:fixed;top:72px;right:0;width:260px;height:calc(100vh - 72px);background:rgba(8,6,15,0.97);backdrop-filter:blur(20px);flex-direction:column;align-items:flex-start;padding:32px 24px;gap:0;transform:translateX(100%);transition:transform 0.3s ease;border-left:1px solid var(--border);}
+      .nav-links.open{transform:translateX(0);}
+      .nav-links li{width:100%;}
+      .nav-links a{display:block;padding:14px 0;border-bottom:1px solid rgba(124,58,199,0.08);font-size:1rem;}
+      .nav-links a::after{display:none;}
+      .nav-cta{display:block;margin-top:20px;text-align:center;padding:12px 24px!important;}
+      .featured-card{grid-template-columns:1fr;}
+      .featured-thumb{min-height:200px;}
+      .featured-body{padding:28px 24px;}
+      .blog-grid{grid-template-columns:1fr;}
+      .footer-top{grid-template-columns:1fr 1fr;gap:36px;}
+      .newsletter-form{flex-direction:column;}
+    }
+    @media(max-width:540px){
+      .footer-top{grid-template-columns:1fr;}
+      .footer-bottom{flex-direction:column;gap:12px;text-align:center;}
+    }
+
+    /* ─── PRELOADER ─── */
+    #preloader{position:fixed;inset:0;z-index:9999;background:var(--navy);display:flex;align-items:center;justify-content:center;transition:opacity 0.6s ease,visibility 0.6s ease;}
+    #preloader.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+    .preloader-inner{display:flex;flex-direction:column;align-items:center;gap:24px;}
+    .preloader-logo-wrap{position:relative;display:flex;align-items:center;justify-content:center;}
+    .preloader-logo{width:110px;height:110px;animation:pre-pulse 2.4s ease-in-out infinite;filter:drop-shadow(0 0 24px rgba(71,180,232,0.5)) drop-shadow(0 0 48px rgba(124,58,199,0.4));}
+    @keyframes pre-pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.06);}}
+    .pre-ring{position:absolute;border-radius:50%;border:1px solid rgba(124,58,199,0.3);}
+    .pre-ring.r1{width:144px;height:144px;animation:pre-spin 8s linear infinite;}
+    .pre-ring.r2{width:178px;height:178px;animation:pre-spin 14s linear infinite reverse;}
+    .pre-ring::after{content:'';position:absolute;width:6px;height:6px;background:var(--blue);border-radius:50%;top:-3px;left:50%;transform:translateX(-50%);box-shadow:0 0 8px var(--blue);}
+    @keyframes pre-spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+    .preloader-text{display:flex;flex-direction:column;align-items:center;gap:5px;}
+    .pre-brand{font-size:1.4rem;font-weight:900;color:var(--white);letter-spacing:6px;}
+    .pre-sub{font-size:0.63rem;font-weight:700;color:var(--blue);letter-spacing:4px;text-transform:uppercase;}
+    .preloader-bar-track{width:160px;height:2px;background:rgba(124,58,199,0.2);border-radius:2px;overflow:hidden;}
+    .preloader-bar{height:100%;width:55%;background:linear-gradient(90deg,transparent,var(--purple),var(--blue),transparent);animation:pre-bar 1.6s ease-in-out infinite;}
+    @keyframes pre-bar{0%{transform:translateX(-200%);}100%{transform:translateX(400%);}}
+  </style>
+</head>
+<body>
+
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="oracta-logo" viewBox="0 0 300 300">
+    <circle cx="150" cy="150" r="148" fill="#7c3ac7"/>
+    <defs><path id="top-arc" d="M 28,150 A 122,122 0 0,1 272,150"/><path id="bot-arc" d="M 38,192 A 122,122 0 0,0 262,192"/></defs>
+    <text fill="white" font-size="30" font-weight="900" font-family="Arial Black, Arial, sans-serif" letter-spacing="6"><textPath href="#top-arc" startOffset="50%" text-anchor="middle">ORACTA</textPath></text>
+    <text fill="white" font-size="22" font-weight="900" font-family="Arial Black, Arial, sans-serif" letter-spacing="3"><textPath href="#bot-arc" startOffset="50%" text-anchor="middle">GUARD HOUSE</textPath></text>
+    <circle cx="150" cy="150" r="107" fill="none" stroke="#e52222" stroke-width="5"/>
+    <circle cx="150" cy="150" r="101" fill="#47b4e8"/>
+    <g fill="white">
+      <path d="M 148,172 C 140,165 125,152 105,135 C 88,120 68,100 48,74 C 56,78 65,85 68,94 C 60,82 58,67 62,52 C 70,66 74,80 76,94 C 74,78 78,64 86,54 C 91,68 92,82 92,96 C 93,80 99,66 110,58 C 111,72 110,85 112,97 C 116,83 125,70 136,63 C 134,77 132,89 134,100 C 139,88 145,78 150,73 Z"/>
+      <path d="M 152,172 C 160,165 175,152 195,135 C 212,120 232,100 252,74 C 244,78 235,85 232,94 C 240,82 242,67 238,52 C 230,66 226,80 224,94 C 226,78 222,64 214,54 C 209,68 208,82 208,96 C 207,80 201,66 190,58 C 189,72 190,85 188,97 C 184,83 175,70 164,63 C 166,77 168,89 166,100 C 161,88 155,78 150,73 Z"/>
+      <ellipse cx="150" cy="178" rx="30" ry="28"/>
+      <path d="M 130,158 L 122,140 L 134,154 Z"/><path d="M 170,158 L 178,140 L 166,154 Z"/>
+    </g>
+    <ellipse cx="140" cy="177" rx="11" ry="10" fill="#1a6fa0"/><ellipse cx="160" cy="177" rx="11" ry="10" fill="#1a6fa0"/>
+    <circle cx="140" cy="177" r="9" fill="#47b4e8"/><circle cx="160" cy="177" r="9" fill="#47b4e8"/>
+    <circle cx="140" cy="177" r="5" fill="#082a50"/><circle cx="160" cy="177" r="5" fill="#082a50"/>
+    <circle cx="137" cy="174" r="2.5" fill="white" opacity="0.9"/><circle cx="157" cy="174" r="2.5" fill="white" opacity="0.9"/>
+    <path d="M 150,184 L 144,193 Q 150,196 156,193 Z" fill="#c8941a"/>
+  </symbol>
+</svg>
+
+<!-- PRELOADER -->
+<div id="preloader">
+  <div class="preloader-inner">
+    <div class="preloader-logo-wrap">
+      <div class="pre-ring r1"></div>
+      <div class="pre-ring r2"></div>
+      <svg class="preloader-logo" viewBox="0 0 300 300"><use href="#oracta-logo"/></svg>
+    </div>
+    <div class="preloader-text">
+      <span class="pre-brand">ORACTA</span>
+      <span class="pre-sub">Guard House</span>
+    </div>
+    <div class="preloader-bar-track">
+      <div class="preloader-bar"></div>
+    </div>
+  </div>
+</div>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">
+    <svg class="nav-logo-svg" viewBox="0 0 300 300"><use href="#oracta-logo"/></svg>
+    <div class="nav-logo-text"><span class="top">ORACTA</span><span class="bot">Guard House</span></div>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html#services">Services</a></li>
+    <li><a href="index.html#industries">Industries</a></li>
+    <li><a href="why-us.html">Why Us</a></li>
+    <li><a href="coverage.html">Coverage</a></li>
+    <li><a href="blog.html" class="active">Blog</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="index.html#contact" class="nav-cta">Get a Quote</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-grid"></div>
+  <div class="page-hero-glow"></div>
+  <div class="page-hero-content">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Blog</span></div>
+    <div class="page-hero-badge">Security Insights</div>
+    <h1>Expert <span style="color:var(--blue)">Knowledge</span><br/>from the <span style="color:var(--purple-light)">Field</span></h1>
+    <p>Practical security advice, industry updates, and insights from Oracta's professionals — helping you stay protected and informed.</p>
+  </div>
+</div>
+
+<!-- FEATURED -->
+<section id="featured">
+  <div class="container">
+    <div class="featured-card reveal">
+      <div class="featured-thumb">
+        <img src="https://picsum.photos/seed/surveillance1/900/480" alt="AI-powered surveillance cameras monitoring a facility" loading="lazy"/>
+        <div class="thumb-overlay" style="background:linear-gradient(135deg,rgba(8,6,15,0.4) 0%,rgba(8,6,15,0.15) 100%);position:absolute;inset:0;z-index:1;"></div>
+      </div>
+      <div class="featured-body">
+        <span class="blog-tag">Technology</span>
+        <h2>How AI-Powered Surveillance Is Redefining Modern Security in Sri Lanka</h2>
+        <div class="blog-meta-row">
+          <div class="meta-author"><div class="meta-avatar">PW</div><span>Priya Wickramasinghe</span></div>
+          <span>May 20, 2026</span>
+          <span class="reading-time">⏱ 8 min read</span>
+        </div>
+        <p>Artificial intelligence is no longer a future concept in security — it's here, deployed across hundreds of Sri Lankan sites right now. From behavioural anomaly detection to licence plate recognition, we break down exactly what AI-powered surveillance can do for your business today, and what to watch out for when choosing a technology-led security provider.</p>
+        <a href="#" class="blog-read-link">Read full article →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ARTICLES -->
+<section id="articles">
+  <div class="container">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;margin-bottom:40px;" class="reveal">
+      <div>
+        <div class="section-label">All Articles</div>
+        <h2 class="section-title" style="margin-bottom:0;">Latest <span class="purple">Posts</span></h2>
+      </div>
+    </div>
+
+    <div class="filter-row reveal">
+      <button class="filter-btn active" onclick="filterPosts('all',this)">All</button>
+      <button class="filter-btn" onclick="filterPosts('manufacturing',this)">Manufacturing</button>
+      <button class="filter-btn" onclick="filterPosts('cash',this)">Cash Management</button>
+      <button class="filter-btn" onclick="filterPosts('technology',this)">Technology</button>
+      <button class="filter-btn" onclick="filterPosts('construction',this)">Construction</button>
+      <button class="filter-btn" onclick="filterPosts('corporate',this)">Corporate</button>
+    </div>
+
+    <div class="blog-grid" id="blogGrid">
+      <div class="blog-card reveal" data-cat="manufacturing">
+        <div class="blog-thumb">
+          <img src="https://picsum.photos/seed/factory1/700/380" alt="Factory production line" loading="lazy"/>
+          <div class="thumb-overlay"></div>
+        </div>
+        <div class="blog-body">
+          <span class="blog-tag">Manufacturing</span>
+          <h3>Factory & Garment Security: Protecting Your Production Line from Internal Threats</h3>
+          <p>Industrial facilities face unique vulnerabilities — from internal theft rings to sabotage. A layered security approach keeps your operations running safely.</p>
+          <div class="blog-footer">
+            <span class="reading-time">⏱ 6 min</span>
+            <a href="#" class="read-more">Read →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="blog-card reveal" data-cat="cash">
+        <div class="blog-thumb">
+          <img src="https://picsum.photos/seed/finance2/700/380" alt="Cash management and financial security" loading="lazy"/>
+          <div class="thumb-overlay"></div>
+        </div>
+        <div class="blog-body">
+          <span class="blog-tag">Cash Management</span>
+          <h3>The Gold Standard in Cash Transit: Eliminating Your Liquidity Risk</h3>
+          <p>Cash-in-transit incidents are rising across Sri Lanka. Professional CIT protocols and armoured logistics can eliminate your exposure entirely.</p>
+          <div class="blog-footer">
+            <span class="reading-time">⏱ 5 min</span>
+            <a href="#" class="read-more">Read →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="blog-card reveal" data-cat="construction">
+        <div class="blog-thumb">
+          <img src="https://picsum.photos/seed/construct4/700/380" alt="Construction site security" loading="lazy"/>
+          <div class="thumb-overlay"></div>
+        </div>
+        <div class="blog-body">
+          <span class="blog-tag">Construction</span>
+          <h3>Construction Site Security: Protecting Equipment, Materials &amp; Workers 24/7</h3>
+          <p>Construction sites are among the highest-risk environments for theft and vandalism. Here's a proven security framework for active build sites.</p>
+          <div class="blog-footer">
+            <span class="reading-time">⏱ 7 min</span>
+            <a href="#" class="read-more">Read →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="blog-card reveal" data-cat="corporate">
+        <div class="blog-thumb">
+          <img src="https://picsum.photos/seed/office5/700/380" alt="Corporate office building" loading="lazy"/>
+          <div class="thumb-overlay"></div>
+        </div>
+        <div class="blog-body">
+          <span class="blog-tag">Corporate</span>
+          <h3>How to Write a Corporate Security Policy That Actually Gets Followed</h3>
+          <p>A security policy only works if your team follows it. We share the key elements every corporate security policy must include — and how to enforce them.</p>
+          <div class="blog-footer">
+            <span class="reading-time">⏱ 5 min</span>
+            <a href="#" class="read-more">Read →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="blog-card reveal" data-cat="technology">
+        <div class="blog-thumb">
+          <img src="https://picsum.photos/seed/techaccess6/700/380" alt="Access control technology" loading="lazy"/>
+          <div class="thumb-overlay"></div>
+        </div>
+        <div class="blog-body">
+          <span class="blog-tag">Technology</span>
+          <h3>Access Control in 2026: Cards, Biometrics &amp; Mobile Credentials Compared</h3>
+          <p>Swipe cards are becoming obsolete. We compare today's access control technologies and help you choose the right system for your site's risk profile.</p>
+          <div class="blog-footer">
+            <span class="reading-time">⏱ 6 min</span>
+            <a href="#" class="read-more">Read →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="blog-card reveal" data-cat="manufacturing">
+        <div class="blog-thumb">
+          <img src="https://picsum.photos/seed/industrial7/700/380" alt="Free trade zone industrial facility" loading="lazy"/>
+          <div class="thumb-overlay"></div>
+        </div>
+        <div class="blog-body">
+          <span class="blog-tag">Manufacturing</span>
+          <h3>Securing Free Trade Zones: Compliance, Perimeter Control &amp; Staff Management</h3>
+          <p>FTZ facilities operate under strict customs and compliance requirements. We outline the security standards that keep you audit-ready at all times.</p>
+          <div class="blog-footer">
+            <span class="reading-time">⏱ 8 min</span>
+            <a href="#" class="read-more">Read →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section id="newsletter">
+  <div class="container">
+    <div class="newsletter-box reveal">
+      <h2>Stay <span style="color:var(--blue)">Informed</span></h2>
+      <p>Get our latest security insights and industry updates delivered to your inbox — once a month, no spam.</p>
+      <form class="newsletter-form" onsubmit="subNewsletter(event)">
+        <label for="nl-email" style="display:none">Email address</label>
+        <input id="nl-email" type="email" placeholder="Enter your email address" required/>
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo">
+        <svg class="nav-logo-svg" viewBox="0 0 300 300"><use href="#oracta-logo"/></svg>
+        <div class="nav-logo-text" style="margin-left:12px;"><span class="top">ORACTA</span><span class="bot">Guard House</span></div>
+      </a>
+      <p>Elite security services trusted by over 1,400 clients across Sri Lanka.</p>
+      <div class="footer-social">
+        <a href="#" class="social-btn">in</a><a href="#" class="social-btn">𝕏</a><a href="#" class="social-btn">f</a><a href="#" class="social-btn">ig</a>
+      </div>
+    </div>
+    <div class="footer-col"><h4>Services</h4><ul><li><a href="index.html#services">Corporate Security</a></li><li><a href="index.html#services">Armed Patrol</a></li><li><a href="index.html#services">Surveillance</a></li><li><a href="index.html#services">Residential</a></li><li><a href="index.html#services">Event Security</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="about.html">About Us</a></li><li><a href="why-us.html">Why Choose Us</a></li><li><a href="blog.html">Blog</a></li><li><a href="coverage.html">Coverage</a></li><li><a href="index.html#contact">Contact</a></li></ul></div>
+    <div class="footer-col"><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li><li><a href="#">Compliance</a></li><li><a href="#">Licensing</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 Oracta Guard House. All rights reserved.</span><span>Protecting Lives &nbsp;|&nbsp; Securing Futures</span></div>
+</footer>
+
+<a href="https://wa.me/94112345678?text=Hello%20Oracta%20Guard%20House" class="wa-float" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  <span class="wa-tooltip">Chat on WhatsApp</span>
+</a>
+
+<script>
+  function toggleNav(){const l=document.getElementById('navLinks'),b=document.getElementById('hamburger'),o=l.classList.toggle('open');b.setAttribute('aria-expanded',o);}
+  document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>document.getElementById('navLinks').classList.remove('open')));
+  window.addEventListener('scroll',()=>{document.getElementById('navbar').style.boxShadow=window.scrollY>60?'0 4px 30px rgba(0,0,0,0.5)':'none';});
+  const obs=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);obs.unobserve(e.target);}});},{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  function filterPosts(cat, btn){
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.blog-card').forEach(card=>{
+      const show = cat==='all' || card.dataset.cat===cat;
+      card.style.display = show ? '' : 'none';
+    });
+  }
+
+  function subNewsletter(e){
+    e.preventDefault();
+    const f=e.target;
+    f.innerHTML='<p style="color:var(--blue);font-weight:600;font-size:1rem;">✓ You\'re subscribed! Thanks for joining.</p>';
+  }
+</script>
+<script>
+(function(){var p=document.getElementById('preloader');function h(){p.classList.add('hidden');}if(document.readyState==='complete'){setTimeout(h,300);}else{window.addEventListener('load',function(){setTimeout(h,400);});}setTimeout(h,4000);})();
+</script>
+</body>
+</html>

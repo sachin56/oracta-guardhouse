@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Coverage — Oracta Guard House</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <style>
+    :root{--navy:#08060f;--navy2:#0e0b1a;--navy3:#1a1530;--purple:#7c3ac7;--purple-light:#9d5fe0;--purple-dim:rgba(124,58,199,0.15);--blue:#47b4e8;--blue-dim:rgba(71,180,232,0.12);--red:#e52222;--white:#ffffff;--text-muted:#8b91aa;--text-light:#c4c9e0;--border:rgba(124,58,199,0.25);--card-bg:rgba(14,11,26,0.85);--radius:12px;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--navy);color:var(--white);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;overflow-x:hidden;}
+    ::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:var(--navy2);}::-webkit-scrollbar-thumb{background:var(--purple);border-radius:3px;}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:72px;background:rgba(8,6,15,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:box-shadow 0.3s ease;}
+    .nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+    .nav-logo-svg{width:46px;height:46px;flex-shrink:0;}
+    .nav-logo-text{display:flex;flex-direction:column;line-height:1.1;}
+    .nav-logo-text .top{font-size:1.05rem;font-weight:800;color:var(--white);letter-spacing:2px;}
+    .nav-logo-text .bot{font-size:0.65rem;font-weight:600;color:var(--blue);letter-spacing:3px;text-transform:uppercase;}
+    .nav-links{display:flex;align-items:center;gap:28px;list-style:none;}
+    .nav-links a{color:var(--text-light);text-decoration:none;font-size:0.88rem;font-weight:500;transition:color 0.2s;position:relative;}
+    .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:2px;background:var(--purple-light);transform:scaleX(0);transition:transform 0.25s ease;}
+    .nav-links a:hover,.nav-links a.active{color:var(--purple-light);}
+    .nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1);}
+    .nav-cta{background:var(--purple)!important;color:var(--white)!important;padding:9px 22px;border-radius:8px;font-weight:700!important;box-shadow:0 4px 16px rgba(124,58,199,0.35);}
+    .nav-cta::after{display:none!important;}
+    .nav-cta:hover{background:var(--purple-light)!important;transform:translateY(-1px);}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none;outline:none;}
+    .hamburger span{display:block;width:25px;height:2px;background:var(--white);border-radius:2px;}
+
+    /* COMMON */
+    section{padding:80px 5%;}
+    .container{max-width:1200px;margin:0 auto;}
+    .section-label{display:inline-flex;align-items:center;gap:8px;font-size:0.73rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--blue);margin-bottom:16px;}
+    .section-label::before,.section-label::after{content:'';display:block;width:20px;height:1px;background:var(--blue);}
+    .section-title{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;letter-spacing:-0.5px;line-height:1.15;margin-bottom:16px;}
+    .section-title .purple{color:var(--purple-light);}
+    .section-title .blue{color:var(--blue);}
+    .section-desc{font-size:0.97rem;color:var(--text-muted);line-height:1.7;max-width:560px;}
+    .btn-primary{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--purple),#5a2a9a);color:var(--white);padding:14px 32px;border-radius:10px;font-weight:700;font-size:1rem;text-decoration:none;transition:all 0.25s ease;box-shadow:0 4px 24px rgba(124,58,199,0.4);}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(124,58,199,0.6);}
+    .btn-secondary{display:inline-flex;align-items:center;gap:10px;background:transparent;color:var(--white);padding:14px 32px;border-radius:10px;font-weight:600;font-size:1rem;text-decoration:none;border:1px solid var(--border);transition:all 0.25s ease;}
+    .btn-secondary:hover{background:var(--purple-dim);border-color:var(--purple-light);transform:translateY(-2px);}
+    .reveal{opacity:0;transform:translateY(30px);transition:opacity 0.6s ease,transform 0.6s ease;}
+    .reveal.visible{opacity:1;transform:translateY(0);}
+
+    /* PAGE HERO */
+    .page-hero{position:relative;padding:140px 5% 80px;background:linear-gradient(180deg,var(--navy) 0%,var(--navy2) 100%);overflow:hidden;}
+    .page-hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(124,58,199,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,199,0.05) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 100%);}
+    .page-hero-glow{position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 60%,rgba(71,180,232,0.12) 0%,transparent 70%);}
+    .page-hero-content{position:relative;z-index:2;text-align:center;max-width:700px;margin:0 auto;}
+    .breadcrumb{display:inline-flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--text-muted);margin-bottom:20px;}
+    .breadcrumb a{color:var(--blue);text-decoration:none;}
+    .breadcrumb span{opacity:0.5;}
+    .page-hero h1{font-size:clamp(2.2rem,5vw,3.6rem);font-weight:800;letter-spacing:-1px;line-height:1.1;margin-bottom:20px;}
+    .page-hero p{font-size:1.05rem;color:var(--text-light);line-height:1.7;}
+    .page-hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--blue-dim);border:1px solid rgba(71,180,232,0.3);border-radius:50px;padding:6px 16px;font-size:0.78rem;font-weight:700;color:var(--blue);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:24px;}
+
+    /* HERO STATS ROW */
+    .hero-stats{display:flex;gap:40px;justify-content:center;flex-wrap:wrap;margin-top:48px;position:relative;z-index:2;}
+    .hero-stat{text-align:center;}
+    .hero-stat .n{font-size:2.2rem;font-weight:800;color:var(--blue);line-height:1;}
+    .hero-stat .l{font-size:0.78rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-top:4px;}
+
+    /* MAP + DISTRICTS */
+    #map-section{background:var(--navy2);}
+    .map-layout{display:grid;grid-template-columns:1fr 1.3fr;gap:80px;align-items:start;max-width:1200px;margin:0 auto;}
+    .district-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:28px;}
+    .district-pill{padding:8px 12px;border-radius:8px;font-size:0.78rem;font-weight:600;text-align:center;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);color:var(--text-muted);transition:all 0.2s ease;cursor:default;}
+    .district-pill.active{background:var(--blue-dim);border-color:rgba(71,180,232,0.35);color:var(--blue);}
+    .district-pill:hover{border-color:var(--purple);color:var(--purple-light);}
+    .district-pill.soon{opacity:0.28;cursor:default;font-size:0.72rem;}
+    .district-pill.soon:hover{border-color:rgba(255,255,255,0.08);color:var(--text-muted);}
+    .district-sub-label{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);margin:14px 0 8px;}
+    .map-legend{font-size:0.75rem;color:var(--text-muted);margin-top:14px;}
+    .map-visual h3{font-size:1.1rem;font-weight:700;margin-bottom:20px;color:var(--white);}
+
+    /* coverage stats grid */
+    .cov-stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:28px;}
+    .cov-stat{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center;}
+    .cov-stat .n{font-size:2rem;font-weight:800;color:var(--blue);line-height:1;}
+    .cov-stat .l{font-size:0.78rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-top:6px;}
+
+    /* HUB CARDS */
+    #hubs{background:var(--navy);}
+    .hubs-intro{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:end;margin-bottom:48px;max-width:1200px;margin-left:auto;margin-right:auto;}
+    .hub-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:900px;margin:0 auto;}
+    .hub-card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:28px;transition:all 0.3s ease;position:relative;overflow:hidden;}
+    .hub-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--blue),var(--purple));transform:scaleY(0);transition:transform 0.4s ease;}
+    .hub-card:hover{border-color:var(--blue);box-shadow:0 16px 50px rgba(71,180,232,0.12);transform:translateX(4px);}
+    .hub-card:hover::before{transform:scaleY(1);}
+    .hub-icon{width:48px;height:48px;background:var(--blue-dim);border:1px solid rgba(71,180,232,0.3);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:16px;}
+    .hub-name{font-size:1.05rem;font-weight:700;margin-bottom:6px;}
+    .hub-province{font-size:0.75rem;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;}
+    .hub-desc{font-size:0.85rem;color:var(--text-muted);line-height:1.6;}
+    .hub-badge{display:inline-block;background:var(--purple-dim);border:1px solid var(--border);border-radius:6px;padding:3px 10px;font-size:0.7rem;font-weight:700;color:var(--purple-light);margin-top:12px;}
+
+    /* HOW IT WORKS */
+    #how-it-works{background:var(--navy2);}
+    .steps-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;max-width:1100px;margin:0 auto;}
+    .steps-row::before{content:'';position:absolute;top:32px;left:12.5%;right:12.5%;height:2px;background:linear-gradient(90deg,var(--blue),var(--purple));z-index:0;}
+    .how-step{text-align:center;padding:0 16px;position:relative;z-index:1;}
+    .step-circle{width:64px;height:64px;background:linear-gradient(135deg,var(--blue),var(--purple));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto 20px;box-shadow:0 0 24px rgba(71,180,232,0.35);border:3px solid var(--navy2);}
+    .how-step h4{font-size:0.95rem;font-weight:700;margin-bottom:8px;}
+    .how-step p{font-size:0.82rem;color:var(--text-muted);line-height:1.6;}
+
+    /* COVERAGE PROMISE */
+    #promise{background:var(--navy);}
+    .promise-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1100px;margin:0 auto;}
+    .promise-card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:32px;text-align:center;transition:all 0.3s ease;}
+    .promise-card:hover{border-color:var(--purple);box-shadow:0 8px 32px rgba(124,58,199,0.15);transform:translateY(-4px);}
+    .promise-icon{font-size:2.2rem;margin-bottom:16px;}
+    .promise-card h4{font-size:1rem;font-weight:700;margin-bottom:10px;}
+    .promise-card p{font-size:0.86rem;color:var(--text-muted);line-height:1.65;}
+
+    /* CTA BANNER */
+    .cta-banner{background:linear-gradient(135deg,var(--navy3),#1a0d38);border:1px solid var(--border);border-radius:20px;padding:60px 48px;text-align:center;margin:0 5% 80px;position:relative;overflow:hidden;}
+    .cta-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(124,58,199,0.15) 0%,transparent 70%);}
+    .cta-banner h2{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;margin-bottom:16px;position:relative;z-index:1;}
+    .cta-banner p{font-size:1rem;color:var(--text-light);margin-bottom:32px;max-width:500px;margin-left:auto;margin-right:auto;position:relative;z-index:1;}
+    .cta-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;}
+
+    /* FOOTER */
+    footer{background:#05030a;border-top:1px solid var(--border);padding:60px 5% 30px;}
+    .footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px;padding-bottom:48px;border-bottom:1px solid var(--border);margin-bottom:32px;}
+    .footer-brand p{font-size:0.86rem;color:var(--text-muted);line-height:1.65;max-width:260px;margin-top:16px;}
+    .footer-social{display:flex;gap:10px;margin-top:24px;}
+    .social-btn{width:36px;height:36px;background:var(--purple-dim);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--purple-light);font-size:0.88rem;transition:all 0.25s ease;}
+    .social-btn:hover{background:var(--purple);color:var(--white);transform:translateY(-2px);}
+    .footer-col h4{font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--blue);margin-bottom:20px;}
+    .footer-col ul{list-style:none;}
+    .footer-col li{margin-bottom:12px;}
+    .footer-col a{color:var(--text-muted);text-decoration:none;font-size:0.86rem;transition:color 0.2s;}
+    .footer-col a:hover{color:var(--white);}
+    .footer-bottom{display:flex;align-items:center;justify-content:space-between;font-size:0.8rem;color:var(--text-muted);}
+    .wa-float{position:fixed;bottom:28px;right:28px;z-index:999;width:58px;height:58px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(37,211,102,0.5);text-decoration:none;transition:all 0.3s ease;}
+    .wa-float:hover{transform:scale(1.12);}
+    .wa-float svg{width:30px;height:30px;}
+    .wa-tooltip{position:absolute;right:72px;top:50%;transform:translateY(-50%);background:#1a1a1a;color:white;padding:7px 14px;border-radius:8px;font-size:0.82rem;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.2s;}
+    .wa-float:hover .wa-tooltip{opacity:1;}
+
+    /* RESPONSIVE */
+    @media(max-width:900px){
+      .hamburger{display:flex;}
+      .nav-links{position:fixed;top:72px;right:0;width:260px;height:calc(100vh - 72px);background:rgba(8,6,15,0.97);backdrop-filter:blur(20px);flex-direction:column;align-items:flex-start;padding:32px 24px;gap:0;transform:translateX(100%);transition:transform 0.3s ease;border-left:1px solid var(--border);}
+      .nav-links.open{transform:translateX(0);}
+      .nav-links li{width:100%;}
+      .nav-links a{display:block;padding:14px 0;border-bottom:1px solid rgba(124,58,199,0.08);font-size:1rem;}
+      .nav-links a::after{display:none;}
+      .nav-cta{display:block;margin-top:20px;text-align:center;padding:12px 24px!important;}
+      .map-layout{grid-template-columns:1fr;gap:40px;}
+      .hub-grid{grid-template-columns:repeat(2,1fr);}
+      .hubs-intro{grid-template-columns:1fr;gap:24px;}
+      .steps-row{grid-template-columns:repeat(2,1fr);gap:32px;}
+      .steps-row::before{display:none;}
+      .promise-grid{grid-template-columns:repeat(2,1fr);}
+      .footer-top{grid-template-columns:1fr 1fr;gap:36px;}
+    }
+    @media(max-width:540px){
+      .district-grid{grid-template-columns:repeat(2,1fr);}
+      .hub-grid{grid-template-columns:1fr;}
+      .promise-grid{grid-template-columns:1fr;}
+      .steps-row{grid-template-columns:1fr;}
+      .hero-stats{gap:24px;}
+      .footer-top{grid-template-columns:1fr;}
+      .footer-bottom{flex-direction:column;gap:12px;text-align:center;}
+      .cta-banner{padding:40px 24px;}
+    }
+  /* LIVE MARKER PULSE */
+  @keyframes liveRing{0%{transform:translate(-50%,-50%) scale(1);opacity:0.7;}100%{transform:translate(-50%,-50%) scale(3.5);opacity:0;}}
+  .live-dot{position:relative;width:14px;height:14px;}
+  .live-dot .core{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:12px;height:12px;background:#47b4e8;border:2px solid #fff;border-radius:50%;box-shadow:0 0 8px rgba(71,180,232,0.7);z-index:2;}
+  .live-dot .ring{position:absolute;top:50%;left:50%;width:12px;height:12px;border:2px solid #47b4e8;border-radius:50%;animation:liveRing 2s ease-out infinite;}
+  .live-dot .ring:nth-child(2){animation-delay:0.7s;}
+  .live-dot .ring:nth-child(3){animation-delay:1.4s;}
+  /* LEAFLET MAP */
+  #coverage-map{width:100%;height:440px;border-radius:12px;overflow:hidden;border:1px solid rgba(71,180,232,0.18);}
+  .map-legend-card{background:#fff;border-radius:14px;padding:18px 22px;box-shadow:0 4px 24px rgba(0,0,0,0.14);min-width:210px;pointer-events:none;}
+  .map-legend-card .leg-title{font-size:0.72rem;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#1a1a1a;display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+  .map-legend-card .pulse-wrap{width:22px;height:22px;background:rgba(71,180,232,0.18);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .map-legend-card .pulse-inner{width:12px;height:12px;background:#47b4e8;border-radius:50%;}
+  .map-legend-card .leg-row{font-size:0.73rem;font-weight:600;color:#666;text-transform:uppercase;letter-spacing:1px;}
+  .map-legend-card .leg-status{color:#47b4e8;font-weight:800;}
+
+  /* ─── PRELOADER ─── */
+  #preloader{position:fixed;inset:0;z-index:9999;background:#08060f;display:flex;align-items:center;justify-content:center;transition:opacity 0.6s ease,visibility 0.6s ease;}
+  #preloader.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+  .preloader-inner{display:flex;flex-direction:column;align-items:center;gap:24px;}
+  .preloader-logo-wrap{position:relative;display:flex;align-items:center;justify-content:center;}
+  .preloader-logo{width:110px;height:110px;animation:pre-pulse 2.4s ease-in-out infinite;filter:drop-shadow(0 0 24px rgba(71,180,232,0.5)) drop-shadow(0 0 48px rgba(124,58,199,0.4));}
+  @keyframes pre-pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.06);}}
+  .pre-ring{position:absolute;border-radius:50%;border:1px solid rgba(124,58,199,0.3);}
+  .pre-ring.r1{width:144px;height:144px;animation:pre-spin 8s linear infinite;}
+  .pre-ring.r2{width:178px;height:178px;animation:pre-spin 14s linear infinite reverse;}
+  .pre-ring::after{content:'';position:absolute;width:6px;height:6px;background:#47b4e8;border-radius:50%;top:-3px;left:50%;transform:translateX(-50%);box-shadow:0 0 8px #47b4e8;}
+  @keyframes pre-spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+  .preloader-text{display:flex;flex-direction:column;align-items:center;gap:5px;}
+  .pre-brand{font-size:1.4rem;font-weight:900;color:#ffffff;letter-spacing:6px;}
+  .pre-sub{font-size:0.63rem;font-weight:700;color:#47b4e8;letter-spacing:4px;text-transform:uppercase;}
+  .preloader-bar-track{width:160px;height:2px;background:rgba(124,58,199,0.2);border-radius:2px;overflow:hidden;}
+  .preloader-bar{height:100%;width:55%;background:linear-gradient(90deg,transparent,#7c3ac7,#47b4e8,transparent);animation:pre-bar 1.6s ease-in-out infinite;}
+  @keyframes pre-bar{0%{transform:translateX(-200%);}100%{transform:translateX(400%);}}
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous"/>
+</head>
+<body>
+
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="oracta-logo" viewBox="0 0 300 300">
+    <circle cx="150" cy="150" r="148" fill="#7c3ac7"/>
+    <defs><path id="top-arc" d="M 28,150 A 122,122 0 0,1 272,150"/><path id="bot-arc" d="M 38,192 A 122,122 0 0,0 262,192"/></defs>
+    <text fill="white" font-size="30" font-weight="900" font-family="Arial Black, Arial, sans-serif" letter-spacing="6"><textPath href="#top-arc" startOffset="50%" text-anchor="middle">ORACTA</textPath></text>
+    <text fill="white" font-size="22" font-weight="900" font-family="Arial Black, Arial, sans-serif" letter-spacing="3"><textPath href="#bot-arc" startOffset="50%" text-anchor="middle">GUARD HOUSE</textPath></text>
+    <circle cx="150" cy="150" r="107" fill="none" stroke="#e52222" stroke-width="5"/>
+    <circle cx="150" cy="150" r="101" fill="#47b4e8"/>
+    <g fill="white">
+      <path d="M 148,172 C 140,165 125,152 105,135 C 88,120 68,100 48,74 C 56,78 65,85 68,94 C 60,82 58,67 62,52 C 70,66 74,80 76,94 C 74,78 78,64 86,54 C 91,68 92,82 92,96 C 93,80 99,66 110,58 C 111,72 110,85 112,97 C 116,83 125,70 136,63 C 134,77 132,89 134,100 C 139,88 145,78 150,73 Z"/>
+      <path d="M 152,172 C 160,165 175,152 195,135 C 212,120 232,100 252,74 C 244,78 235,85 232,94 C 240,82 242,67 238,52 C 230,66 226,80 224,94 C 226,78 222,64 214,54 C 209,68 208,82 208,96 C 207,80 201,66 190,58 C 189,72 190,85 188,97 C 184,83 175,70 164,63 C 166,77 168,89 166,100 C 161,88 155,78 150,73 Z"/>
+      <ellipse cx="150" cy="178" rx="30" ry="28"/>
+      <path d="M 130,158 L 122,140 L 134,154 Z"/><path d="M 170,158 L 178,140 L 166,154 Z"/>
+      <ellipse cx="150" cy="204" rx="20" ry="16" opacity="0.9"/>
+    </g>
+    <ellipse cx="140" cy="177" rx="11" ry="10" fill="#1a6fa0"/><ellipse cx="160" cy="177" rx="11" ry="10" fill="#1a6fa0"/>
+    <circle cx="140" cy="177" r="9" fill="#47b4e8"/><circle cx="160" cy="177" r="9" fill="#47b4e8"/>
+    <circle cx="140" cy="177" r="5" fill="#082a50"/><circle cx="160" cy="177" r="5" fill="#082a50"/>
+    <circle cx="137" cy="174" r="2.5" fill="white" opacity="0.9"/><circle cx="157" cy="174" r="2.5" fill="white" opacity="0.9"/>
+    <path d="M 150,184 L 144,193 Q 150,196 156,193 Z" fill="#c8941a"/>
+  </symbol>
+</svg>
+
+<!-- PRELOADER -->
+<div id="preloader">
+  <div class="preloader-inner">
+    <div class="preloader-logo-wrap">
+      <div class="pre-ring r1"></div>
+      <div class="pre-ring r2"></div>
+      <svg class="preloader-logo" viewBox="0 0 300 300"><use href="#oracta-logo"/></svg>
+    </div>
+    <div class="preloader-text">
+      <span class="pre-brand">ORACTA</span>
+      <span class="pre-sub">Guard House</span>
+    </div>
+    <div class="preloader-bar-track">
+      <div class="preloader-bar"></div>
+    </div>
+  </div>
+</div>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">
+    <svg class="nav-logo-svg" viewBox="0 0 300 300"><use href="#oracta-logo"/></svg>
+    <div class="nav-logo-text"><span class="top">ORACTA</span><span class="bot">Guard House</span></div>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html#services">Services</a></li>
+    <li><a href="index.html#industries">Industries</a></li>
+    <li><a href="why-us.html">Why Us</a></li>
+    <li><a href="coverage.html" class="active">Coverage</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="index.html#contact" class="nav-cta">Get a Quote</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="Toggle menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-grid"></div>
+  <div class="page-hero-glow"></div>
+  <div class="page-hero-content">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Coverage</span></div>
+    <div class="page-hero-badge">📍 Current Operations</div>
+    <h1>Where We<br/><span style="color:var(--blue);">Operate</span></h1>
+    <p>Oracta is currently operational across Colombo, Gampaha, and Kalutara — the heart of Sri Lanka's Western Province. We're expanding rapidly island-wide.</p>
+  </div>
+  <div class="hero-stats reveal">
+    <div class="hero-stat"><div class="n">3</div><div class="l">Active Districts</div></div>
+    <div class="hero-stat"><div class="n">1</div><div class="l">Province</div></div>
+    <div class="hero-stat"><div class="n">3</div><div class="l">Active Hubs</div></div>
+    <div class="hero-stat"><div class="n">24/7</div><div class="l">Active Coverage</div></div>
+    <div class="hero-stat"><div class="n">1,400+</div><div class="l">Active Clients</div></div>
+  </div>
+</div>
+
+<!-- MAP + DISTRICTS -->
+<section id="map-section">
+  <div class="map-layout">
+    <div class="reveal">
+      <div class="section-label">District Presence</div>
+      <h2 class="section-title">Western Province<br/><span class="blue">Active Operations</span></h2>
+      <p class="section-desc" style="margin-bottom:24px;">We currently operate across all three districts of the Western Province — Sri Lanka's most densely populated and commercially active region.</p>
+
+      <p class="district-sub-label">Currently Active</p>
+      <div class="district-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:20px;">
+        <div class="district-pill active">Colombo</div>
+        <div class="district-pill active">Gampaha</div>
+        <div class="district-pill active">Kalutara</div>
+      </div>
+
+      <p class="district-sub-label">Expanding Soon</p>
+      <div class="district-grid">
+        <div class="district-pill soon">Kandy</div>
+        <div class="district-pill soon">Galle</div>
+        <div class="district-pill soon">Matara</div>
+        <div class="district-pill soon">Matale</div>
+        <div class="district-pill soon">Nuwara Eliya</div>
+        <div class="district-pill soon">Hambantota</div>
+        <div class="district-pill soon">Kurunegala</div>
+        <div class="district-pill soon">Puttalam</div>
+        <div class="district-pill soon">Ratnapura</div>
+        <div class="district-pill soon">Kegalle</div>
+        <div class="district-pill soon">Badulla</div>
+        <div class="district-pill soon">Moneragala</div>
+        <div class="district-pill soon">Anuradhapura</div>
+        <div class="district-pill soon">Polonnaruwa</div>
+        <div class="district-pill soon">Trincomalee</div>
+        <div class="district-pill soon">Batticaloa</div>
+        <div class="district-pill soon">Ampara</div>
+        <div class="district-pill soon">Jaffna</div>
+        <div class="district-pill soon">Kilinochchi</div>
+        <div class="district-pill soon">Mannar</div>
+        <div class="district-pill soon">Vavuniya</div>
+        <div class="district-pill soon">Mullaitivu</div>
+      </div>
+      <p class="map-legend" style="margin-top:14px;"><span style="color:var(--blue);">●</span> Active &nbsp;&nbsp; <span style="opacity:0.4;">●</span> Coming soon</p>
+    </div>
+
+    <div class="reveal">
+      <div class="map-visual">
+        <h3>Operational Presence</h3>
+        <div id="coverage-map"></div>
+        <div class="cov-stats-grid" style="margin-top:28px;">
+          <div class="cov-stat"><div class="n">3</div><div class="l">Districts</div></div>
+          <div class="cov-stat"><div class="n">1</div><div class="l">Province</div></div>
+          <div class="cov-stat"><div class="n">3</div><div class="l">Active Hubs</div></div>
+          <div class="cov-stat"><div class="n">24/7</div><div class="l">Coverage</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRIMARY HUBS -->
+<section id="hubs">
+  <div class="container">
+    <div class="hubs-intro">
+      <div class="reveal">
+        <div class="section-label">Active Hubs</div>
+        <h2 class="section-title">Three Operational<br/><span class="purple">Command Centres</span></h2>
+      </div>
+      <div class="reveal">
+        <p class="section-desc">Our three Western Province hubs are fully staffed around the clock — coordinating rapid deployment and client support across Colombo, Gampaha, and Kalutara.</p>
+      </div>
+    </div>
+    <div class="hub-grid">
+      <div class="hub-card reveal">
+        <div class="hub-icon">🏙</div>
+        <div class="hub-name">Colombo</div>
+        <div class="hub-province">Western Province</div>
+        <p class="hub-desc">Our headquarters and largest hub. Serves the commercial capital and surrounding metro area with the highest guard density and fastest response times.</p>
+        <span class="hub-badge">HQ / Main Hub</span>
+      </div>
+      <div class="hub-card reveal">
+        <div class="hub-icon">🌿</div>
+        <div class="hub-name">Gampaha</div>
+        <div class="hub-province">Western Province</div>
+        <p class="hub-desc">Covering greater Colombo's northern suburbs, free-trade zones, and the international airport corridor — a critical logistics and industrial zone.</p>
+        <span class="hub-badge">Primary Hub</span>
+      </div>
+      <div class="hub-card reveal">
+        <div class="hub-icon">🌊</div>
+        <div class="hub-name">Kalutara</div>
+        <div class="hub-province">Western Province</div>
+        <p class="hub-desc">Southern gateway hub protecting resort properties, beachfront developments, and industrial sites along the coastal belt.</p>
+        <span class="hub-badge">Primary Hub</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW COVERAGE WORKS -->
+<section id="how-it-works">
+  <div class="container" style="text-align:center;max-width:700px;margin-bottom:56px;">
+    <div class="section-label" style="justify-content:center;">How It Works</div>
+    <h2 class="section-title">From Inquiry to On-Site<br/><span class="blue">In 48 Hours</span></h2>
+    <p class="section-desc" style="margin:0 auto;">Our district presence means we don't need to mobilise from scratch — your nearest hub team is already local and operational.</p>
+  </div>
+  <div class="steps-row reveal">
+    <div class="how-step">
+      <div class="step-circle">📋</div>
+      <h4>Site Assessment</h4>
+      <p>Our nearest hub coordinator visits your location within 24 hours to assess security needs and risk factors.</p>
+    </div>
+    <div class="how-step">
+      <div class="step-circle">🧩</div>
+      <h4>Custom Plan</h4>
+      <p>A tailored security plan is drafted based on your site's layout, operating hours, and threat profile.</p>
+    </div>
+    <div class="how-step">
+      <div class="step-circle">👮</div>
+      <h4>Team Deployment</h4>
+      <p>Pre-vetted, district-based guards are assigned — no unfamiliar relocations, just experienced local professionals.</p>
+    </div>
+    <div class="how-step">
+      <div class="step-circle">📡</div>
+      <h4>24/7 Command Oversight</h4>
+      <p>Your hub monitors the deployment around the clock with real-time reporting and rapid escalation protocols.</p>
+    </div>
+  </div>
+</section>
+
+<!-- COVERAGE PROMISE -->
+<section id="promise">
+  <div style="text-align:center;max-width:600px;margin:0 auto 48px;">
+    <div class="section-label" style="justify-content:center;">Our Commitment</div>
+    <h2 class="section-title">The <span class="purple">Coverage Promise</span></h2>
+    <p class="section-desc" style="margin:0 auto;">Every district, every shift, every time.</p>
+  </div>
+  <div class="promise-grid">
+    <div class="promise-card reveal">
+      <div class="promise-icon">⚡</div>
+      <h4>Rapid Response</h4>
+      <p>Primary hub districts receive emergency response within 30 minutes. All other districts within 90 minutes via our district relay network.</p>
+    </div>
+    <div class="promise-card reveal">
+      <div class="promise-icon">🔄</div>
+      <h4>Seamless Scalability</h4>
+      <p>Need one guard at a single site or a 50-person team across 20 locations? Our island-wide infrastructure scales instantly with your needs.</p>
+    </div>
+    <div class="promise-card reveal">
+      <div class="promise-icon">📞</div>
+      <h4>Single Point of Contact</h4>
+      <p>No matter how many sites you have across how many districts, you deal with one account manager and one reporting dashboard.</p>
+    </div>
+    <div class="promise-card reveal">
+      <div class="promise-icon">🛡</div>
+      <h4>Consistent Standards</h4>
+      <p>Every guard across every district is trained to the same Oracta standard — same SOPs, same equipment, same professionalism.</p>
+    </div>
+    <div class="promise-card reveal">
+      <div class="promise-icon">📍</div>
+      <h4>Local Knowledge</h4>
+      <p>District-based teams know the terrain, local access routes, and community dynamics — an advantage no centrally deployed team can match.</p>
+    </div>
+    <div class="promise-card reveal">
+      <div class="promise-icon">📊</div>
+      <h4>Real-Time Reporting</h4>
+      <p>Live shift reports, incident logs, and guard location data are available to you 24/7 through your client portal regardless of site location.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<div class="cta-banner reveal">
+  <h2>Ready to Secure Your Site<br/>Anywhere in Sri Lanka?</h2>
+  <p>Tell us your location and requirements — we'll have a coordinator from your nearest hub in touch within the hour.</p>
+  <div class="cta-actions">
+    <a href="index.html#contact" class="btn-primary">Request a Free Site Assessment →</a>
+    <a href="why-us.html" class="btn-secondary">Why Choose Oracta →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo">
+        <svg class="nav-logo-svg" viewBox="0 0 300 300"><use href="#oracta-logo"/></svg>
+        <div class="nav-logo-text" style="margin-left:12px;"><span class="top">ORACTA</span><span class="bot">Guard House</span></div>
+      </a>
+      <p>Elite security services trusted by over 1,400 clients across Sri Lanka.</p>
+      <div class="footer-social">
+        <a href="#" class="social-btn">in</a><a href="#" class="social-btn">𝕏</a><a href="#" class="social-btn">f</a><a href="#" class="social-btn">ig</a>
+      </div>
+    </div>
+    <div class="footer-col"><h4>Services</h4><ul><li><a href="index.html#services">Corporate Security</a></li><li><a href="index.html#services">Armed Patrol</a></li><li><a href="index.html#services">Surveillance</a></li><li><a href="index.html#services">Residential</a></li><li><a href="index.html#services">Event Security</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="about.html">About Us</a></li><li><a href="why-us.html">Why Choose Us</a></li><li><a href="blog.html">Blog</a></li><li><a href="coverage.html">Coverage</a></li><li><a href="index.html#contact">Contact</a></li></ul></div>
+    <div class="footer-col"><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li><li><a href="#">Compliance</a></li><li><a href="#">Licensing</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 Oracta Guard House. All rights reserved.</span><span>Protecting Lives &nbsp;|&nbsp; Securing Futures</span></div>
+</footer>
+
+<a href="https://wa.me/94112345678?text=Hello%20Oracta%20Guard%20House" class="wa-float" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  <span class="wa-tooltip">Chat on WhatsApp</span>
+</a>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script>
+<script>
+  function toggleNav(){const l=document.getElementById('navLinks'),b=document.getElementById('hamburger'),o=l.classList.toggle('open');b.setAttribute('aria-expanded',o);}
+  document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>document.getElementById('navLinks').classList.remove('open')));
+  window.addEventListener('scroll',()=>{document.getElementById('navbar').style.boxShadow=window.scrollY>60?'0 4px 30px rgba(0,0,0,0.5)':'none';});
+  const obs=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);obs.unobserve(e.target);}});},{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  // Leaflet coverage map
+  (function(){
+    const map = L.map('coverage-map', {
+      center: [7.85, 80.70],
+      zoom: 7,
+      zoomControl: false,
+      scrollWheelZoom: false,
+      dragging: false,
+      doubleClickZoom: false,
+      touchZoom: false
+    });
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://leaflet.js.com">Leaflet</a> | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      subdomains: 'abcd',
+      maxZoom: 19
+    }).addTo(map);
+
+    const nodes = [
+      [7.09,  79.99 ],  // Gampaha
+      [6.921, 79.858],  // Colombo
+      [6.582, 80.000]   // Kalutara
+    ];
+
+    // Glow effect — layered translucent circles simulate a heat overlay
+    const glowRings = [
+      {r: 55000, o: 0.04},
+      {r: 35000, o: 0.06},
+      {r: 20000, o: 0.09},
+      {r: 10000, o: 0.13}
+    ];
+    nodes.forEach(n => {
+      glowRings.forEach(g => {
+        L.circle(n, {
+          radius: g.r,
+          color: 'transparent',
+          fillColor: '#7c3ac7',
+          fillOpacity: g.o,
+          interactive: false
+        }).addTo(map);
+      });
+    });
+
+    // Live pulsing markers
+    const liveIcon = L.divIcon({
+      className: '',
+      html: '<div class="live-dot"><div class="ring"></div><div class="ring"></div><div class="ring"></div><div class="core"></div></div>',
+      iconSize: [14, 14],
+      iconAnchor: [7, 7]
+    });
+    nodes.forEach(n => L.marker(n, {icon: liveIcon}).addTo(map));
+
+  })();
+</script>
+<script>
+(function(){var p=document.getElementById('preloader');function h(){p.classList.add('hidden');}if(document.readyState==='complete'){setTimeout(h,300);}else{window.addEventListener('load',function(){setTimeout(h,400);});}setTimeout(h,4000);})();
+</script>
+</body>
+</html>

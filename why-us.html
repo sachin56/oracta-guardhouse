@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Why Choose Us — Oracta Guard House</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <style>
+    :root{--navy:#08060f;--navy2:#0e0b1a;--navy3:#1a1530;--purple:#7c3ac7;--purple-light:#9d5fe0;--purple-dim:rgba(124,58,199,0.15);--blue:#47b4e8;--red:#e52222;--white:#ffffff;--text-muted:#8b91aa;--text-light:#c4c9e0;--border:rgba(124,58,199,0.25);--card-bg:rgba(14,11,26,0.85);--radius:12px;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--navy);color:var(--white);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;overflow-x:hidden;}
+    ::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:var(--navy2);}::-webkit-scrollbar-thumb{background:var(--purple);border-radius:3px;}
+    nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:72px;background:rgba(8,6,15,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:box-shadow 0.3s ease;}
+    .nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+    .nav-logo-svg{width:46px;height:46px;flex-shrink:0;}
+    .nav-logo-text{display:flex;flex-direction:column;line-height:1.1;}
+    .nav-logo-text .top{font-size:1.05rem;font-weight:800;color:var(--white);letter-spacing:2px;}
+    .nav-logo-text .bot{font-size:0.65rem;font-weight:600;color:var(--blue);letter-spacing:3px;text-transform:uppercase;}
+    .nav-links{display:flex;align-items:center;gap:28px;list-style:none;}
+    .nav-links a{color:var(--text-light);text-decoration:none;font-size:0.88rem;font-weight:500;transition:color 0.2s;position:relative;}
+    .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:2px;background:var(--purple-light);transform:scaleX(0);transition:transform 0.25s ease;}
+    .nav-links a:hover,.nav-links a.active{color:var(--purple-light);}
+    .nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1);}
+    .nav-cta{background:var(--purple)!important;color:var(--white)!important;padding:9px 22px;border-radius:8px;font-weight:700!important;box-shadow:0 4px 16px rgba(124,58,199,0.35);}
+    .nav-cta::after{display:none!important;}
+    .nav-cta:hover{background:var(--purple-light)!important;transform:translateY(-1px);}
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none;outline:none;}
+    .hamburger span{display:block;width:25px;height:2px;background:var(--white);border-radius:2px;}
+    section{padding:80px 5%;}
+    .container{max-width:1200px;margin:0 auto;}
+    .section-label{display:inline-flex;align-items:center;gap:8px;font-size:0.73rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--blue);margin-bottom:16px;}
+    .section-label::before,.section-label::after{content:'';display:block;width:20px;height:1px;background:var(--blue);}
+    .section-title{font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;letter-spacing:-0.5px;line-height:1.15;margin-bottom:16px;}
+    .section-title .purple{color:var(--purple-light);}
+    .section-title .blue{color:var(--blue);}
+    .section-desc{font-size:0.97rem;color:var(--text-muted);line-height:1.7;max-width:560px;}
+    .btn-primary{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--purple),#5a2a9a);color:var(--white);padding:14px 32px;border-radius:10px;font-weight:700;font-size:1rem;text-decoration:none;transition:all 0.25s ease;box-shadow:0 4px 24px rgba(124,58,199,0.4);}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 36px rgba(124,58,199,0.6);}
+    .btn-secondary{display:inline-flex;align-items:center;gap:10px;background:transparent;color:var(--white);padding:14px 32px;border-radius:10px;font-weight:600;font-size:1rem;text-decoration:none;border:1px solid var(--border);transition:all 0.25s ease;}
+    .btn-secondary:hover{background:var(--purple-dim);border-color:var(--purple-light);transform:translateY(-2px);}
+    .reveal{opacity:0;transform:translateY(30px);transition:opacity 0.6s ease,transform 0.6s ease;}
+    .reveal.visible{opacity:1;transform:translateY(0);}
+
+    /* PAGE HERO */
+    .page-hero{position:relative;padding:140px 5% 80px;background:linear-gradient(180deg,var(--navy) 0%,var(--navy2) 100%);overflow:hidden;}
+    .page-hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(124,58,199,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(124,58,199,0.05) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 100%);}
+    .page-hero-glow{position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 60%,rgba(71,180,232,0.1) 0%,transparent 70%);}
+    .page-hero-content{position:relative;z-index:2;text-align:center;max-width:700px;margin:0 auto;}
+    .breadcrumb{display:inline-flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--text-muted);margin-bottom:20px;}
+    .breadcrumb a{color:var(--blue);text-decoration:none;}
+    .breadcrumb span{opacity:0.5;}
+    .page-hero h1{font-size:clamp(2.2rem,5vw,3.6rem);font-weight:800;letter-spacing:-1px;line-height:1.1;margin-bottom:20px;}
+    .page-hero p{font-size:1.05rem;color:var(--text-light);line-height:1.7;}
+    .page-hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--purple-dim);border:1px solid var(--border);border-radius:50px;padding:6px 16px;font-size:0.78rem;font-weight:700;color:var(--blue);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:24px;}
+
+    /* REASONS */
+    #reasons{background:var(--navy);}
+    .reasons-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;}
+    .reason-card{display:flex;gap:24px;align-items:flex-start;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:32px;transition:all 0.3s ease;position:relative;overflow:hidden;}
+    .reason-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--purple),var(--blue));transform:scaleY(0);transition:transform 0.4s ease;}
+    .reason-card:hover{border-color:var(--purple);box-shadow:0 16px 50px rgba(124,58,199,0.15);transform:translateX(4px);}
+    .reason-card:hover::before{transform:scaleY(1);}
+    .reason-icon-box{width:54px;height:54px;background:var(--purple-dim);border:1px solid var(--border);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0;transition:all 0.3s ease;}
+    .reason-card:hover .reason-icon-box{background:rgba(124,58,199,0.25);transform:scale(1.08);}
+    .reason-body h4{font-size:1.08rem;font-weight:700;margin-bottom:10px;}
+    .reason-body p{font-size:0.88rem;color:var(--text-muted);line-height:1.7;}
+    .reason-num{font-size:0.72rem;font-weight:700;color:var(--purple-light);letter-spacing:1px;margin-bottom:6px;text-transform:uppercase;}
+
+    /* PROCESS */
+    #process{background:var(--navy2);}
+    .process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;max-width:1100px;margin:0 auto;}
+    .process-steps::before{content:'';position:absolute;top:32px;left:12.5%;right:12.5%;height:2px;background:linear-gradient(90deg,var(--purple),var(--blue));z-index:0;}
+    .step{text-align:center;padding:0 16px;position:relative;z-index:1;}
+    .step-circle{width:64px;height:64px;background:linear-gradient(135deg,var(--purple),var(--blue));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto 20px;box-shadow:0 0 24px rgba(124,58,199,0.4);border:3px solid var(--navy2);}
+    .step h4{font-size:0.95rem;font-weight:700;margin-bottom:8px;}
+    .step p{font-size:0.82rem;color:var(--text-muted);line-height:1.6;}
+
+    /* COMPARISON */
+    #comparison{background:var(--navy);}
+    .compare-table{width:100%;border-collapse:collapse;max-width:900px;margin:0 auto;}
+    .compare-table th,.compare-table td{padding:16px 20px;text-align:left;border-bottom:1px solid var(--border);}
+    .compare-table thead th{font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted);}
+    .compare-table thead th.highlight{color:var(--white);background:linear-gradient(135deg,var(--purple),#5a2a9a);border-radius:10px 10px 0 0;}
+    .compare-table tbody tr:hover{background:rgba(124,58,199,0.05);}
+    .compare-table td{font-size:0.9rem;color:var(--text-light);}
+    .compare-table td.highlight{background:rgba(124,58,199,0.08);border-left:1px solid rgba(124,58,199,0.3);border-right:1px solid rgba(124,58,199,0.3);}
+    .compare-table tr:last-child td.highlight{border-radius:0 0 10px 10px;}
+    .tick{color:#4ade80;font-weight:700;}
+    .cross{color:var(--text-muted);}
+    .feature-label{font-weight:600;color:var(--white);}
+
+    /* CTA BANNER */
+    .cta-banner{background:linear-gradient(135deg,var(--navy3),#1a0d38);border:1px solid var(--border);border-radius:20px;padding:60px 48px;text-align:center;margin:0 5% 80px;position:relative;overflow:hidden;}
+    .cta-banner::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(124,58,199,0.15) 0%,transparent 70%);}
+    .cta-banner h2{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;margin-bottom:16px;position:relative;z-index:1;}
+    .cta-banner p{font-size:1rem;color:var(--text-light);margin-bottom:32px;max-width:500px;margin-left:auto;margin-right:auto;position:relative;z-index:1;}
+    .cta-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;}
+
+    footer{background:#05030a;border-top:1px solid var(--border);padding:60px 5% 30px;}
+    .footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:48px;padding-bottom:48px;border-bottom:1px solid var(--border);margin-bottom:32px;}
+    .footer-brand p{font-size:0.86rem;color:var(--text-muted);line-height:1.65;max-width:260px;margin-top:16px;}
+    .footer-social{display:flex;gap:10px;margin-top:24px;}
+    .social-btn{width:36px;height:36px;background:var(--purple-dim);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--purple-light);font-size:0.88rem;transition:all 0.25s ease;}
+    .social-btn:hover{background:var(--purple);color:var(--white);transform:translateY(-2px);}
+    .footer-col h4{font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--blue);margin-bottom:20px;}
+    .footer-col ul{list-style:none;}
+    .footer-col li{margin-bottom:12px;}
+    .footer-col a{color:var(--text-muted);text-decoration:none;font-size:0.86rem;transition:color 0.2s;}
+    .footer-col a:hover{color:var(--white);}
+    .footer-bottom{display:flex;align-items:center;justify-content:space-between;font-size:0.8rem;color:var(--text-muted);}
+    .wa-float{position:fixed;bottom:28px;right:28px;z-index:999;width:58px;height:58px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(37,211,102,0.5);text-decoration:none;transition:all 0.3s ease;}
+    .wa-float:hover{transform:scale(1.12);}
+    .wa-float svg{width:30px;height:30px;}
+    .wa-tooltip{position:absolute;right:72px;top:50%;transform:translateY(-50%);background:#1a1a1a;color:white;padding:7px 14px;border-radius:8px;font-size:0.82rem;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.2s;}
+    .wa-float:hover .wa-tooltip{opacity:1;}
+
+    @media(max-width:900px){
+      .hamburger{display:flex;}
+      .nav-links{position:fixed;top:72px;right:0;width:260px;height:calc(100vh - 72px);background:rgba(8,6,15,0.97);backdrop-filter:blur(20px);flex-direction:column;align-items:flex-start;padding:32px 24px;gap:0;transform:translateX(100%);transition:transform 0.3s ease;border-left:1px solid var(--border);}
+      .nav-links.open{transform:translateX(0);}
+      .nav-links li{width:100%;}
+      .nav-links a{display:block;padding:14px 0;border-bottom:1px solid rgba(124,58,199,0.08);font-size:1rem;}
+      .nav-links a::after{display:none;}
+      .nav-cta{display:block;margin-top:20px;text-align:center;padding:12px 24px!important;}
+      .reasons-grid{grid-template-columns:1fr;}
+      .process-steps{grid-template-columns:repeat(2,1fr);gap:32px;}
+      .process-steps::before{display:none;}
+      .footer-top{grid-template-columns:1fr 1fr;gap:36px;}
+      .compare-table{font-size:0.82rem;}
+      .compare-table th,.compare-table td{padding:12px 14px;}
+    }
+    @media(max-width:540px){
+      .footer-top{grid-template-columns:1fr;}
+      .footer-bottom{flex-direction:column;gap:12px;text-align:center;}
+      .cta-banner{padding:40px 24px;}
+      .process-steps{grid-template-columns:1fr;}
+    }
+
+    /* ─── PRELOADER ─── */
+    #preloader{position:fixed;inset:0;z-index:9999;background:var(--navy);display:flex;align-items:center;justify-content:center;transition:opacity 0.6s ease,visibility 0.6s ease;}
+    #preloader.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+    .preloader-inner{display:flex;flex-direction:column;align-items:center;gap:24px;}
+    .preloader-logo-wrap{position:relative;display:flex;align-items:center;justify-content:center;}
+    .preloader-logo{width:110px;height:110px;animation:pre-pulse 2.4s ease-in-out infinite;filter:drop-shadow(0 0 24px rgba(71,180,232,0.5)) drop-shadow(0 0 48px rgba(124,58,199,0.4));}
+    @keyframes pre-pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.06);}}
+    .pre-ring{position:absolute;border-radius:50%;border:1px solid rgba(124,58,199,0.3);}
+    .pre-ring.r1{width:144px;height:144px;animation:pre-spin 8s linear infinite;}
+    .pre-ring.r2{width:178px;height:178px;animation:pre-spin 14s linear infinite reverse;}
+    .pre-ring::after{content:'';position:absolute;width:6px;height:6px;background:var(--blue);border-radius:50%;top:-3px;left:50%;transform:translateX(-50%);box-shadow:0 0 8px var(--blue);}
+    @keyframes pre-spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+    .preloader-text{display:flex;flex-direction:column;align-items:center;gap:5px;}
+    .pre-brand{font-size:1.4rem;font-weight:900;color:var(--white);letter-spacing:6px;}
+    .pre-sub{font-size:0.63rem;font-weight:700;color:var(--blue);letter-spacing:4px;text-transform:uppercase;}
+    .preloader-bar-track{width:160px;height:2px;background:rgba(124,58,199,0.2);border-radius:2px;overflow:hidden;}
+    .preloader-bar{height:100%;width:55%;background:linear-gradient(90deg,transparent,var(--purple),var(--blue),transparent);animation:pre-bar 1.6s ease-in-out infinite;}
+    @keyframes pre-bar{0%{transform:translateX(-200%);}100%{transform:translateX(400%);}}
+  </style>
+</head>
+<body>
+
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="oracta-logo" viewBox="0 0 300 300">
+    <circle cx="150" cy="150" r="148" fill="#7c3ac7"/>
+    <defs><path id="top-arc" d="M 28,150 A 122,122 0 0,1 272,150"/><path id="bot-arc" d="M 38,192 A 122,122 0 0,0 262,192"/></defs>
+    <text fill="white" font-size="30" font-weight="900" font-family="Arial Black, Arial, sans-serif" letter-spacing="6"><textPath href="#top-arc" startOffset="50%" text-anchor="middle">ORACTA</textPath></text>
+    <text fill="white" font-size="22" font-weight="900" font-family="Arial Black, Arial, sans-serif" letter-spacing="3"><textPath href="#bot-arc" startOffset="50%" text-anchor="middle">GUARD HOUSE</textPath></text>
+    <circle cx="150" cy="150" r="107" fill="none" stroke="#e52222" stroke-width="5"/>
+    <circle cx="150" cy="150" r="101" fill="#47b4e8"/>
+    <g fill="white">
+      <path d="M 148,172 C 140,165 125,152 105,135 C 88,120 68,100 48,74 C 56,78 65,85 68,94 C 60,82 58,67 62,52 C 70,66 74,80 76,94 C 74,78 78,64 86,54 C 91,68 92,82 92,96 C 93,80 99,66 110,58 C 111,72 110,85 112,97 C 116,83 125,70 136,63 C 134,77 132,89 134,100 C 139,88 145,78 150,73 Z"/>
+      <path d="M 152,172 C 160,165 175,152 195,135 C 212,120 232,100 252,74 C 244,78 235,85 232,94 C 240,82 242,67 238,52 C 230,66 226,80 224,94 C 226,78 222,64 214,54 C 209,68 208,82 208,96 C 207,80 201,66 190,58 C 189,72 190,85 188,97 C 184,83 175,70 164,63 C 166,77 168,89 166,100 C 161,88 155,78 150,73 Z"/>
+      <ellipse cx="150" cy="178" rx="30" ry="28"/>
+      <path d="M 130,158 L 122,140 L 134,154 Z"/><path d="M 170,158 L 178,140 L 166,154 Z"/>
+      <ellipse cx="150" cy="204" rx="20" ry="16" opacity="0.9"/>
+    </g>
+    <ellipse cx="140" cy="177" rx="11" ry="10" fill="#1a6fa0"/><ellipse cx="160" cy="177" rx="11" ry="10" fill="#1a6fa0"/>
+    <circle cx="140" cy="177" r="9" fill="#47b4e8"/><circle cx="160" cy="177" r="9" fill="#47b4e8"/>
+    <circle cx="140" cy="177" r="5" fill="#082a50"/><circle cx="160" cy="177" r="5" fill="#082a50"/>
+    <circle cx="137" cy="174" r="2.5" fill="white" opacity="0.9"/><circle cx="157" cy="174" r="2.5" fill="white" opacity="0.9"/>
+    <path d="M 150,184 L 144,193 Q 150,196 156,193 Z" fill="#c8941a"/>
+  </symbol>
+</svg>
+
+<!-- PRELOADER -->
+<div id="preloader">
+  <div class="preloader-inner">
+    <div class="preloader-logo-wrap">
+      <div class="pre-ring r1"></div>
+      <div class="pre-ring r2"></div>
+      <svg class="preloader-logo" viewBox="0 0 300 300"><use href="#oracta-logo"/></svg>
+    </div>
+    <div class="preloader-text">
+      <span class="pre-brand">ORACTA</span>
+      <span class="pre-sub">Guard House</span>
+    </div>
+    <div class="preloader-bar-track">
+      <div class="preloader-bar"></div>
+    </div>
+  </div>
+</div>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">
+    <svg class="nav-logo-svg" viewBox="0 0 300 300"><use href="#oracta-logo"/></svg>
+    <div class="nav-logo-text"><span class="top">ORACTA</span><span class="bot">Guard House</span></div>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html#services">Services</a></li>
+    <li><a href="index.html#industries">Industries</a></li>
+    <li><a href="why-us.html" class="active">Why Us</a></li>
+    <li><a href="coverage.html">Coverage</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="index.html#contact" class="nav-cta">Get a Quote</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Toggle navigation" aria-expanded="false" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="page-hero">
+  <div class="page-hero-grid"></div>
+  <div class="page-hero-glow"></div>
+  <div class="page-hero-content">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span>Why Choose Us</span></div>
+    <div class="page-hero-badge">Our Difference</div>
+    <h1>Why <span style="color:var(--blue)">Oracta</span> Stands<br/><span style="color:var(--purple-light)">Apart</span></h1>
+    <p>Every security company makes promises. Here's what backs ours — in detail.</p>
+  </div>
+</div>
+
+<!-- REASONS -->
+<section id="reasons">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:60px;" class="reveal">
+      <div class="section-label" style="justify-content:center;">6 Key Reasons</div>
+      <h2 class="section-title">What Makes Us <span class="purple">Different</span></h2>
+    </div>
+    <div class="reasons-grid">
+      <div class="reason-card reveal">
+        <div class="reason-icon-box">📋</div>
+        <div class="reason-body">
+          <div class="reason-num">Reason 01</div>
+          <h4>Licensed &amp; Fully Compliant</h4>
+          <p>Every Oracta operation is licensed under the Private Security Services Authority of Sri Lanka. Every officer is individually registered, background-checked, and legally deployed. You carry zero liability exposure — we handle full regulatory compliance on your behalf, including annual audits and renewal documentation.</p>
+        </div>
+      </div>
+      <div class="reason-card reveal">
+        <div class="reason-icon-box">⚡</div>
+        <div class="reason-body">
+          <div class="reason-num">Reason 02</div>
+          <h4>Rapid Response Guarantee</h4>
+          <p>Our control room operates 24/7/365. The moment an incident is flagged — by a guard, client call, or sensor alert — our nearest mobile response unit dispatches within minutes. We maintain dedicated patrol fleets in Colombo, Gampaha, Kandy, Galle, Matara, and Jaffna for guaranteed fast deployment.</p>
+        </div>
+      </div>
+      <div class="reason-card reveal">
+        <div class="reason-icon-box">🤖</div>
+        <div class="reason-body">
+          <div class="reason-num">Reason 03</div>
+          <h4>Technology-Integrated Security</h4>
+          <p>We combine human expertise with AI-assisted CCTV analytics, digital guard tour systems (with GPS verification), and real-time incident reporting via our client portal. You get monthly security analytics reports and live dashboard access — so you always know exactly what's happening at your site.</p>
+        </div>
+      </div>
+      <div class="reason-card reveal">
+        <div class="reason-icon-box">🎓</div>
+        <div class="reason-body">
+          <div class="reason-num">Reason 04</div>
+          <h4>Continuous Guard Training</h4>
+          <p>Training doesn't stop at onboarding. Every Oracta officer undergoes 200+ hours of initial training plus quarterly refresher programs covering threat assessment, first aid, fire safety, conflict de-escalation, and customer interaction. Our Head of Training holds international security credentials from recognised global bodies.</p>
+        </div>
+      </div>
+      <div class="reason-card reveal">
+        <div class="reason-icon-box">🤝</div>
+        <div class="reason-body">
+          <div class="reason-num">Reason 05</div>
+          <h4>Dedicated Account Management</h4>
+          <p>Every client — from a single shopfront to a 50-site enterprise — is assigned a dedicated account manager. One person. Direct line. No call centres, no ticket queues, no runaround. Your manager conducts regular site reviews, handles all scheduling changes, and escalates issues to senior operations within 30 minutes.</p>
+        </div>
+      </div>
+      <div class="reason-card reveal">
+        <div class="reason-icon-box">🗺️</div>
+        <div class="reason-body">
+          <div class="reason-num">Reason 06</div>
+          <h4>Scalable Island-Wide Coverage</h4>
+          <p>Whether you need one officer at a single site or a coordinated team across 20 locations, Oracta scales seamlessly. Our operational presence across all 25 Sri Lankan districts means no matter where your business grows, your security coverage grows with it — with the same quality standards at every site.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:70px;" class="reveal">
+      <div class="section-label" style="justify-content:center;">How We Work</div>
+      <h2 class="section-title">From Enquiry to <span class="blue">Deployment</span></h2>
+      <p class="section-desc" style="margin:0 auto;">A simple, transparent process that gets you protected fast — without the paperwork headaches.</p>
+    </div>
+    <div class="process-steps">
+      <div class="step reveal">
+        <div class="step-circle">📞</div>
+        <h4>1. Initial Consultation</h4>
+        <p>Contact us via call, WhatsApp, or our online form. A senior consultant responds within 2 hours to understand your needs.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-circle">🔍</div>
+        <h4>2. Site Assessment</h4>
+        <p>Our team conducts a free on-site security audit — identifying vulnerabilities, access points, and the right service mix for your premises.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-circle">📄</div>
+        <h4>3. Custom Proposal</h4>
+        <p>We deliver a tailored security plan and transparent quote within 48 hours. No hidden fees, no lock-in until you're satisfied.</p>
+      </div>
+      <div class="step reveal">
+        <div class="step-circle">🛡️</div>
+        <h4>4. Deployment</h4>
+        <p>Trained, uniformed officers are briefed on your site and deployed on schedule. Ongoing review meetings keep the plan aligned with your needs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON TABLE -->
+<section id="comparison">
+  <div class="container">
+    <div style="text-align:center;margin-bottom:60px;" class="reveal">
+      <div class="section-label" style="justify-content:center;">Side by Side</div>
+      <h2 class="section-title">Oracta vs. <span class="purple">The Rest</span></h2>
+    </div>
+    <div class="reveal" style="overflow-x:auto;">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th style="width:40%;">Feature</th>
+            <th class="highlight" style="text-align:center;">Oracta Guard House</th>
+            <th style="text-align:center;color:var(--text-muted);">Typical Competitor</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="feature-label">PSSA Licensed &amp; Compliant</td>
+            <td class="highlight" style="text-align:center;"><span class="tick">✓ Yes</span></td>
+            <td style="text-align:center;color:var(--text-muted);">Varies</td>
+          </tr>
+          <tr>
+            <td class="feature-label">24/7 Control Room</td>
+            <td class="highlight" style="text-align:center;"><span class="tick">✓ Yes</span></td>
+            <td style="text-align:center;"><span class="cross">✗ Office hours only</span></td>
+          </tr>
+          <tr>
+            <td class="feature-label">Dedicated Account Manager</td>
+            <td class="highlight" style="text-align:center;"><span class="tick">✓ Every client</span></td>
+            <td style="text-align:center;"><span class="cross">✗ Shared support</span></td>
+          </tr>
+          <tr>
+            <td class="feature-label">AI-Assisted Surveillance</td>
+            <td class="highlight" style="text-align:center;"><span class="tick">✓ Included</span></td>
+            <td style="text-align:center;"><span class="cross">✗ Extra cost</span></td>
+          </tr>
+          <tr>
+            <td class="feature-label">Quarterly Officer Retraining</td>
+            <td class="highlight" style="text-align:center;"><span class="tick">✓ Mandatory</span></td>
+            <td style="text-align:center;"><span class="cross">✗ Not standard</span></td>
+          </tr>
+          <tr>
+            <td class="feature-label">Digital Guard Tour (GPS)</td>
+            <td class="highlight" style="text-align:center;"><span class="tick">✓ All sites</span></td>
+            <td style="text-align:center;">Varies</td>
+          </tr>
+          <tr>
+            <td class="feature-label">Island-Wide District Coverage</td>
+            <td class="highlight" style="text-align:center;"><span class="tick">✓ All 25 districts</span></td>
+            <td style="text-align:center;"><span class="cross">✗ Limited regions</span></td>
+          </tr>
+          <tr>
+            <td class="feature-label">Monthly Analytics Reports</td>
+            <td class="highlight" style="text-align:center;"><span class="tick">✓ Standard</span></td>
+            <td style="text-align:center;"><span class="cross">✗ On request only</span></td>
+          </tr>
+          <tr>
+            <td class="feature-label">ISO 9001 Certified</td>
+            <td class="highlight" style="text-align:center;"><span class="tick">✓ Since 2017</span></td>
+            <td style="text-align:center;"><span class="cross">✗ Most are not</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-banner reveal">
+  <h2>Convinced? Let's <span style="color:var(--blue)">Get Started.</span></h2>
+  <p>Talk to a security consultant today and get a free site assessment within 48 hours.</p>
+  <div class="cta-actions">
+    <a href="index.html#contact" class="btn-primary">Request a Free Quote →</a>
+    <a href="about.html" class="btn-secondary">Learn About Oracta →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo">
+        <svg class="nav-logo-svg" viewBox="0 0 300 300"><use href="#oracta-logo"/></svg>
+        <div class="nav-logo-text" style="margin-left:12px;"><span class="top">ORACTA</span><span class="bot">Guard House</span></div>
+      </a>
+      <p>Elite security services trusted by over 1,400 clients across Sri Lanka.</p>
+      <div class="footer-social">
+        <a href="#" class="social-btn">in</a><a href="#" class="social-btn">𝕏</a><a href="#" class="social-btn">f</a><a href="#" class="social-btn">ig</a>
+      </div>
+    </div>
+    <div class="footer-col"><h4>Services</h4><ul><li><a href="index.html#services">Corporate Security</a></li><li><a href="index.html#services">Armed Patrol</a></li><li><a href="index.html#services">Surveillance</a></li><li><a href="index.html#services">Residential</a></li><li><a href="index.html#services">Event Security</a></li></ul></div>
+    <div class="footer-col"><h4>Company</h4><ul><li><a href="about.html">About Us</a></li><li><a href="why-us.html">Why Choose Us</a></li><li><a href="blog.html">Blog</a></li><li><a href="coverage.html">Coverage</a></li><li><a href="index.html#contact">Contact</a></li></ul></div>
+    <div class="footer-col"><h4>Legal</h4><ul><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li><li><a href="#">Compliance</a></li><li><a href="#">Licensing</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 Oracta Guard House. All rights reserved.</span><span>Protecting Lives &nbsp;|&nbsp; Securing Futures</span></div>
+</footer>
+
+<a href="https://wa.me/94112345678?text=Hello%20Oracta%20Guard%20House" class="wa-float" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  <span class="wa-tooltip">Chat on WhatsApp</span>
+</a>
+
+<script>
+  function toggleNav(){const l=document.getElementById('navLinks'),b=document.getElementById('hamburger'),o=l.classList.toggle('open');b.setAttribute('aria-expanded',o);}
+  document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>document.getElementById('navLinks').classList.remove('open')));
+  window.addEventListener('scroll',()=>{document.getElementById('navbar').style.boxShadow=window.scrollY>60?'0 4px 30px rgba(0,0,0,0.5)':'none';});
+  const obs=new IntersectionObserver(entries=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);obs.unobserve(e.target);}});},{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+<script>
+(function(){var p=document.getElementById('preloader');function h(){p.classList.add('hidden');}if(document.readyState==='complete'){setTimeout(h,300);}else{window.addEventListener('load',function(){setTimeout(h,400);});}setTimeout(h,4000);})();
+</script>
+</body>
+</html>
